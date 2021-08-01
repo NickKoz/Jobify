@@ -1,0 +1,65 @@
+<div class="register">
+
+    <h1>Sign up now!</h1>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div>
+            <input id="name" type="text" placeholder="Name" formControlName="name">
+            <div class="error" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                Name is required!
+            </div>
+        </div>
+        
+        <div>
+            <input id="surname" type="text" placeholder="Surname" formControlName="surname">
+            <div class="error" *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched">
+                Surname is required!
+            </div>
+        </div>
+        
+        <div>
+            <input id="email" type="email" placeholder="Email" formControlName="email">
+            <div class="error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                Email is required!
+            </div>
+        </div>
+        
+        <div>
+            <input id="password" type="password" placeholder="Password" formControlName="password">
+            <div class="error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                Password is required!
+            </div>
+        </div>
+        
+        <div>
+            <input id="confirmPassword" type="password" placeholder="Confirm Password" formControlName="confirmPassword">
+            <div class="error" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+                Password is required!
+            </div>
+        </div>
+
+        <div>
+            <input id="phone" type="text" placeholder="Phone number" formControlName="phone">
+            <div class="error" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+                Phone is not valid!
+            </div>
+        </div>
+        
+        <div id="buttonPhoto-area">
+            <!-- <input id="photo" type="file" name="Upload photo" accept="image" formControlName="photo"> -->
+            <button class="button-photo" onclick="document.getElementById('getFile').click()">Upload profile picture</button>
+            <input type='file' id="getFile" style="display:none">
+        </div>
+        
+        
+        <div>
+            <button class="button" [disabled]="registerForm.invalid" type="submit" >
+                Register
+            </button>
+        </div>
+        
+    </form>
+    
+</div>
+    

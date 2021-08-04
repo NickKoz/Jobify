@@ -1,114 +1,54 @@
 .register {
-    display: grid;
-    place-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 50px;
-    padding-bottom: 90px;
-  }
+  display: grid;
+  place-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 50px;
+  padding-bottom: 90px;
+}
 
-  .register > h1 {
-    font-size: 50px;
-    font-weight: 500;
-    margin-top: 70px;
-  }
-  
-  .register > img {
-    object-fit: contain;
-    height: 250px;
-    margin-top: -80px;
-    margin-bottom: 20px;
-  }
-  
-  .register > form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .register > form > div > input {
-    width: 350px;
-    height: 50px;
-    font-size: 20px;
-    padding-left: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 0.5px solid;
-  }
+.register > h1 {
+  font-weight: 500;
+  margin-top: 70px;
+}
 
-  .register > form > div > .error{
-    color: red;
-  }
-  
-  .register > form > div > input:focus {
-    outline: none !important;
-    border: 2px solid #0a66c2;
-    background-color: #e8f0fe;
-  }
-  
-  .register > form > div > button {
-    width: 350px;
-    height: 50px;
-    margin-top: 10px;
-    margin-left: 7px;
-    font-size: large;
-    color: white;
-    background-color: #0a66c2;
-    border-radius: 50px;
-    border: 0.5px solid;
-    outline: none !important;
-  }
-  
-  .register > form > div > button:hover {
-    cursor: pointer;
-    filter: brightness(110%);
-  }
-  
-  .register__register {
-    cursor: pointer;
-    color: #0a66c2;
-  }
-  
-  .register > p {
-    margin-top: 20px;
-  }
-  
-  .register > h4 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-top: 40px;
-  }
-  
-  .register > h4 > a {
-    text-decoration: none;
-    color: #0a66c2;
-  }
-  
-  @media screen and (max-width: 750px) {
-    .register > img {
-      height: 180px;
-      margin-top: -10px;
-  }
-  
-  .register > form > div > input {
-    width: 320px;
-    height: 42px;
-    font-size: 16px;
-    margin: 0 10px 12px 10px;
-   
-  }
-  .register > form > div > button {
-    width: 250px;
-    height: 50px;
-    margin-top: 20px;
-    margin-left: 45px;
-  }
-  
-  .register > p {
-    margin-top: 30px;
-  }
-  
+.register > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register > form > div > input {
+  width: 350px;
+  height: 50px;
+  font-size: 20px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 0.5px solid;
+}
 
 
-  
+.register > form > div > input:focus {
+  outline: none !important;
+  border: 2px solid #0a66c2;
+  background-color: #e8f0fe;
+}
 
-  }
+.register > form > div > button {
+  width: 350px;
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 7px;
+  font-size: large;
+  color: white;
+  background-color: #0a66c2;
+  border-radius: 50px;
+  border: 0.5px solid;
+  outline: none !important;
+}
+
+.register > form > div > button:hover {
+  cursor: pointer;
+  filter: brightness(110%);
+}
+

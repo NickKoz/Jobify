@@ -1,0 +1,17 @@
+
+.message404 {
+    /* background-color: white;
+    margin-top: 30px;
+    text-align: center;
+    display: grid; */
+    text-align: center;
+    place-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 150px;
+}
+
+.message404 > h1 {
+    color: #0a66c2;
+    font-size: 80px;
+}

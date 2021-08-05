@@ -1,0 +1,47 @@
+
+<div class="home-bar">
+    <div class="home-bar-right">
+        <div>
+            <button type="button" class="button" routerLink="/register">Register</button>
+        </div>
+        <div class="login-container">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                
+                <input id="email" type="text" placeholder="Email" formControlName="email">
+                <span class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                    Email is required!
+                </span>
+                
+                <input id="password" type="password" placeholder="Password" formControlName="password">
+                <span class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    Password is required!
+                </span>
+
+                <button class="button" [disabled]="loginForm.invalid" type="submit" >
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="welcome-section">
+    
+    <h1>Welcome back!!</h1>
+
+    <div class="row">
+        <div class="column">
+            <img src="../../assets/Photos/Business2.jpg">
+            <p>Find out about new jobs every day.</p>
+        </div>
+
+        <div class="column">
+            <img src="../../assets/Photos/Business1.jpg">
+            <p>Let the employers find you. <a routerLink="/register">Join now!</a></p>
+        </div>
+    </div>
+
+</div>
+
+

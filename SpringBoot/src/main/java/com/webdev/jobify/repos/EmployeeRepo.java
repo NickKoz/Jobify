@@ -1,6 +1,6 @@
-package com.webdev.linkedin.repo;
+package com.webdev.jobify.repos;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.webdev.linkedin.model.Employee;
+import com.webdev.jobify.model.Employee;
 
 import java.util.Optional;
 

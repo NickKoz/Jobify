@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.webdev</groupId>
-	<artifactId>linkedin</artifactId>
+	<artifactId>jobify</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>linkedin</name>
+	<name>Jobify</name>
 	<description>Linked In clone</description>
 	<properties>
 		<java.version>11</java.version>
@@ -36,6 +36,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+			<version>2.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

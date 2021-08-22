@@ -1,10 +1,10 @@
-package com.webdev.linkedin;
+package com.webdev.jobify;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LinkedinApplicationTests {
+class JobifyTests {
 
 	@Test
 	void contextLoads() {

@@ -1,31 +1,37 @@
-package com.webdev.linkedin.service;
+package com.webdev.jobify.services;
 
+import com.webdev.jobify.model.Employee;
+import com.webdev.jobify.repos.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.webdev.linkedin.exception.UserNotFoundException;
-import com.webdev.linkedin.model.Employee;
-import com.webdev.linkedin.repo.EmployeeRepo;
+import com.webdev.jobify.exception.UserNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepo employeeRepo;
+    public final EmployeeRepo employeeRepo;
     @Autowired
     public EmployeeService(EmployeeRepo employeeRepo){
         this.employeeRepo = employeeRepo;
     }
 
     public Employee addEmployee(Employee employee) {
-        employee.setEmployeeCode(UUID.randomUUID().toString());
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPasswd = passwordEncoder.encode(employee.getPassword());
+
+        employee.setPassword(encodedPasswd);
+
         return employeeRepo.save(employee);
     }
+
     public List<Employee> findAllEmployees() {
         return employeeRepo.findAll();
     }
+
     public Employee updateEmployee(Employee employee){
         return employeeRepo.save(employee);
     }

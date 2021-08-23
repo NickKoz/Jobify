@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "df7bde30-f481-4785-9685-284b8f1a01fb"
+    "analytics": "bd361b3f-1832-44f4-be5c-3a69d7e1d19e"
   },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "LinkedFront": {
+    "Client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/LinkedFront",
+            "outputPath": "dist/Client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "LinkedFront:build:production"
+              "browserTarget": "Client:build:production"
             },
             "development": {
-              "browserTarget": "LinkedFront:build:development"
+              "browserTarget": "Client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "LinkedFront:build"
+            "browserTarget": "Client:build"
           }
         },
         "test": {
@@ -105,5 +105,5 @@
       }
     }
   },
-  "defaultProject": "LinkedFront"
+  "defaultProject": "Client"
 }

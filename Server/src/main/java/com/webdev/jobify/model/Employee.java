@@ -1,7 +1,15 @@
 package com.webdev.jobify.model;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -115,5 +123,37 @@ public class Employee implements Serializable{
                 ", phone='" + phone + '\'' +
                 ", photo='" + photo + '\'' +
                 '}';
+    }
+
+    public void updateProfilePicture(MultipartFile picture) throws IOException {
+        if(!picture.isEmpty()){
+            byte[] bytes = picture.getBytes();
+            Path currRelativePath = Paths.get("");
+
+            String uploadPath = currRelativePath.toAbsolutePath().toString() + File.separator + "src" + File.separator +
+                    "main" + File.separator + "resources" + File.separator + "uploaded" + File.separator + "profile" + File.separator +
+                    "pictures" + File.separator;
+
+            File uploadDir = new File(uploadPath);
+            if(!uploadDir.exists()){
+                uploadDir.mkdirs();
+            }
+
+            // Generate a new random name for profile picture.
+            String newRandomPictureName = UUID.randomUUID().toString();
+
+            // Get its extension.
+            String pictureName = picture.getOriginalFilename();
+            String pictureExtension = pictureName.substring(pictureName.lastIndexOf(".") + 1);
+
+            String picturePath = uploadPath + newRandomPictureName + "." + pictureExtension;
+            Path destPath = Paths.get(picturePath);
+
+            // Save it to uploaded folder.
+            Files.write(destPath, bytes);
+
+            // Update employee's data.
+            this.setImageUrl(picturePath);
+        }
     }
 }

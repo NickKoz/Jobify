@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   employee: Employee = new Employee("", "", "", "", "", "", "");
+  profilePicture: File;
 
   constructor(private formBuilder: FormBuilder, private http:HttpClient, private employeeService: EmployeeService) {
     this.registerForm = this.formBuilder.group({
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
     // console.log(JSON.stringify(this.employee));
 
     // Send employee's data to server with post request.
-    let resp = this.employeeService.registerEmployee(this.employee);
+    let resp = this.employeeService.registerEmployee(this.employee, this.profilePicture);
     
     // Subscribe response.
     resp.subscribe((data) => {console.log("Data: " + JSON.stringify(data));});
@@ -55,6 +56,15 @@ export class RegisterComponent implements OnInit {
   public control(name: string){
     return this.registerForm.get(name);
   }
+
+
+  public processPhoto(event: Event){
+
+    let target = event.target as HTMLInputElement;
+    this.profilePicture = (target.files as FileList)[0];
+
+  } 
+
 
   ngOnInit(): void {
   }

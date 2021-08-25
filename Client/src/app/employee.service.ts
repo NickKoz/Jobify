@@ -12,15 +12,32 @@ export class EmployeeService {
   private employeeURL: string = 'http://localhost:8080/employee';
 
   private httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({'Content-Type': 'multipart/form-data'})
   }
 
   constructor(private http: HttpClient) {}
 
 
-  public registerEmployee(employee: Employee) {
-    return this.http.post<Employee>(this.employeeURL + '/add', JSON.stringify(employee), this.httpOptions);
-    // return this.http.post<Employee>(this.employeeURL, employee);
+  public registerEmployee(employee: Employee, profilePicture: File) {
+
+    const employeeJson = JSON.stringify(employee);
+    const employeeData = new Blob([employeeJson], {
+      type: 'application/json'
+    });
+
+    const formData = new FormData();
+    formData.append('employee', employeeData);
+
+    if(profilePicture) {
+      formData.append('picture', profilePicture, profilePicture.name);
+    }
+    
+    return this.http.post(this.employeeURL + '/add', formData);
+  }
+
+
+  public loginEmployee() {
+    
   }
 
 

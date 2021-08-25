@@ -8,7 +8,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +47,11 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee){
+    @ResponseBody
+    public ResponseEntity<?> addEmployee(@RequestPart("employee") Employee employee, @RequestPart(value = "picture", required = false) MultipartFile picture) throws IOException {
+
+        employee.updateProfilePicture(picture);
+
         EntityModel<Employee> entityModel = assembler.toModel(employeeService.addEmployee(employee));
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

@@ -62,6 +62,12 @@ export class EmployeeService {
     return this.http.get<Employee[]>(this.employeeURL + '/all');
   }
 
-  
+  public extractEmployees(data: Object): Employee[] {
+
+    let jsonString: string = JSON.stringify(data);
+    let jsonObject: any = JSON.parse(jsonString);
+    return jsonObject._embedded.employeeList;
+
+  }
 
 }

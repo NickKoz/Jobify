@@ -16,8 +16,10 @@ export class AdministrationComponent implements OnInit {
 
   ngOnInit(): void {
     let resp = this.employeeService.getEmployees();
-    resp.subscribe((emps) => {this.employees = emps;
-      console.log(JSON.stringify(emps));});
+    resp.subscribe((emps) => {
+      this.employees = this.employeeService.extractEmployees(emps);
+      console.log(JSON.stringify(emps));
+    });
   }
 
 }

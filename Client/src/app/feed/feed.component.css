@@ -1,16 +1,27 @@
-
-
-
 /* Style the top navigation bar */
-.home-bar {
+.feed-bar {
     overflow: hidden;
     background-color: white;
 }
 
+
+.feed-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+
+.feed-bar li {
+    display: inline;
+}
+
+
+
 /* Style the topnav links */
-.home-bar a {
-    float: left;
-    display: block;
+.feed-bar a {
+    display: inline-block;
     color: #0a66c2;
     text-align: center;
     padding: 14px 16px;
@@ -18,8 +29,8 @@
 }
 
 /* Change color on hover */
-.home-bar a:hover {
-    background-color: #ddd;
+.feed-bar a:hover {
+    background-color: #4496e9;
     color: black;
 }
 
@@ -50,7 +61,7 @@
 }
 
 .home-bar-right .login-container .button {
-    margin-right: 10px;
+    margin-left: -2px;
 }
 
 
@@ -72,40 +83,3 @@
     cursor: pointer;
     filter: brightness(110%);
 }
-
-.welcome-section {
-    display: grid;
-    place-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 50px;
-    padding-bottom: 90px;
-}
-
-
-
-.column {
-    float: left;
-    width: 50%;
-    padding: 15px;
-}
-
-.column > img {
-    width:700px; 
-    height: 500px;
-    margin-top: 30px;
-}
-
-.column > p {
-    text-align: center;
-    margin-top: 30px;
-    font-size: larger;
-}
-
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-

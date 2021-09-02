@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Employee } from '../employee';
-import { EmployeeService } from '../employee.service';
+import { Employee } from '../employee/employee';
+import { EmployeeService } from '../employee/employee.service';
 
 
 @Component({
@@ -14,7 +13,7 @@ import { EmployeeService } from '../employee.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  employee: Employee = new Employee("", "", "", "", "", "", "");
+  employee: Employee = new Employee("", "", "", "", "", "");
   profilePicture: File;
 
   constructor(private formBuilder: FormBuilder, private http:HttpClient, private employeeService: EmployeeService) {
@@ -36,7 +35,6 @@ export class RegisterComponent implements OnInit {
     this.employee.surname = this.registerForm.get('surname')!.value;
     this.employee.email = this.registerForm.get('email')!.value;
     this.employee.password = this.registerForm.get('password')!.value;
-    this.employee.confirmPassword = this.registerForm.get('confirmPassword')!.value;
     this.employee.phone = this.registerForm.get('phone')!.value;
     this.employee.photo = this.registerForm.get('photo')!.value;
 

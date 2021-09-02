@@ -126,6 +126,11 @@ public class Employee implements Serializable{
     }
 
     public void updateProfilePicture(MultipartFile picture) throws IOException {
+
+        if(picture == null) {
+            return;
+        }
+
         if(!picture.isEmpty()){
             byte[] bytes = picture.getBytes();
             Path currRelativePath = Paths.get("");

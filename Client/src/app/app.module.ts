@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { FeedComponent } from './feed/feed.component';
+import { AdministrationComponent } from './administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    FeedComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +42,14 @@ import { NotFoundComponent } from './not-found/not-found.component';
       {
         path: '404', 
         component: NotFoundComponent
+      },
+      {
+        path: 'feed',
+        component: FeedComponent
+      },
+      {
+        path: 'admin',
+        component: AdministrationComponent
       },
       {
         path: '**', 

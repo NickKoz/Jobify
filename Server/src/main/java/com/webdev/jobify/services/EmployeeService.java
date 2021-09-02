@@ -38,7 +38,16 @@ public class EmployeeService {
 
     public Employee findEmployeeById(Long id){
         return employeeRepo.findEmployeeById(id)
-                .orElseThrow(() -> new UserNotFoundException("User by id" + id + "was not found"));
+                .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
+    }
+
+    public Employee findEmployeeByEmail(String email) {
+        return employeeRepo.findEmployeeByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " was not found"));
+    }
+
+    public boolean exists(String email) {
+        return employeeRepo.existsByEmail(email);
     }
 
     public void deleteEmployee(Long id){

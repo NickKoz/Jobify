@@ -1,12 +1,15 @@
 package com.webdev.jobify.controllers;
 
+import com.webdev.jobify.exception.UserNotFoundException;
 import com.webdev.jobify.model.Employee;
 import com.webdev.jobify.model.EmployeeModelAssembler;
 import com.webdev.jobify.services.EmployeeService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,11 +43,42 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/find/{id}")
-    public EntityModel<Employee> getEmployeeById(@PathVariable("id") Long id){
-        Employee employee = employeeService.findEmployeeById(id);
+//    @GetMapping("/find/{id}")
+//    public EntityModel<Employee> getEmployeeById(@PathVariable("id") Long id){
+//        Employee employee = employeeService.findEmployeeById(id);
+//        return assembler.toModel(employee);
+//    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginEmployee(@RequestParam("email") String email, @RequestParam("password") String password) {
+
+        EntityModel<Employee> entityModel;
+
+        try {
+            entityModel = assembler.toModel(employeeService.findEmployeeByEmail(email));
+        }
+        catch (UserNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email was not found!");
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean isCorrectPassword = passwordEncoder.matches(password, entityModel.getContent().getPassword());
+
+        if(isCorrectPassword){
+            return ResponseEntity.status(HttpStatus.OK).body(entityModel);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Wrong password!");
+    }
+
+
+    @GetMapping("/find/{email}")
+    public EntityModel<Employee> getEmployeeByEmail(@PathVariable("email") String email){
+        Employee employee = employeeService.findEmployeeByEmail(email);
         return assembler.toModel(employee);
     }
+
 
     @PostMapping("/add")
     @ResponseBody

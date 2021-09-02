@@ -9,4 +9,7 @@ public interface EmployeeRepo extends  JpaRepository<Employee, Long>{
     void deleteEmployeeById(Long id);
 
     Optional<Employee> findEmployeeById(Long id);
+
+    Optional<Employee> findEmployeeByEmail(String email);
+    boolean existsByEmail(String email);
 }

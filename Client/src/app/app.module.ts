@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { FeedComponent } from './feed/feed.component';
 import { AdministrationComponent } from './administration/administration.component';
+import { EmployeeDetailsComponent } from './administration/employee-details/employee-details.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AdministrationComponent } from './administration/administration.compone
     FooterComponent,
     NotFoundComponent,
     FeedComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    EmployeeDetailsComponent
   ],
   imports: [
     BrowserModule,

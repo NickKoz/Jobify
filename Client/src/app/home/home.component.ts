@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AdminService } from '../admin/admin.service';
-import { EmployeeService } from '../employee/employee.service';
+import { AdminService } from '../_models/admin/admin.service';
+import { EmployeeService } from '../_models/employee/employee.service';
 import * as globals from '../globals';
 
 @Component({

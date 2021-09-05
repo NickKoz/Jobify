@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Employee } from 'src/app/employee/employee';
-import { EmployeeService } from 'src/app/employee/employee.service';
+import { Employee } from 'src/app/_models/employee/employee';
+import { EmployeeService } from 'src/app/_models/employee/employee.service';
 
 
 

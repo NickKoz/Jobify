@@ -1,7 +1,6 @@
-import { getLocaleMonthNames } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Employee } from '../employee/employee';
-import { EmployeeService } from '../employee/employee.service';
+import { Employee } from '../_models/employee/employee';
+import { EmployeeService } from '../_models/employee/employee.service';
 
 @Component({
   selector: 'app-administration',

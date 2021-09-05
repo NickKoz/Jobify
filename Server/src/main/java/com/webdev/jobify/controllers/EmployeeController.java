@@ -2,7 +2,8 @@ package com.webdev.jobify.controllers;
 
 import com.webdev.jobify.exception.UserNotFoundException;
 import com.webdev.jobify.model.Employee;
-import com.webdev.jobify.model.EmployeeModelAssembler;
+import com.webdev.jobify.assemblers.EmployeeModelAssembler;
+import com.webdev.jobify.model.Picture;
 import com.webdev.jobify.services.EmployeeService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -15,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +47,30 @@ public class EmployeeController {
     }
 
 
-//    @GetMapping("/find/{id}")
-//    public EntityModel<Employee> getEmployeeById(@PathVariable("id") Long id){
-//        Employee employee = employeeService.findEmployeeById(id);
-//        return assembler.toModel(employee);
-//    }
+    @GetMapping("/{id}")
+    public EntityModel<Employee> getEmployeeById(@PathVariable("id") Long id){
+        Employee employee = employeeService.findEmployeeById(id);
+        return assembler.toModel(employee);
+    }
+
+
+    @GetMapping("/{id}/picture")
+    public Picture getEmployeePicture(@PathVariable("id") Long id) throws IOException {
+
+        Employee employee = employeeService.findEmployeeById(id);
+        String pictureName = employee.getImageUrl();
+        Path pictLocation = Paths.get(pictureName);
+
+        if(pictureName.isEmpty()){
+            return null;
+        }
+
+        byte[] data = Files.readAllBytes(pictLocation);
+
+        String pictExtension = pictureName.substring(pictureName.lastIndexOf(".") + 1);
+
+        return new Picture(pictExtension, data);
+    }
 
 
     @PostMapping("/login")
@@ -69,7 +92,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.OK).body(entityModel);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Wrong password!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong password!");
     }
 
 

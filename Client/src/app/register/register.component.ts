@@ -13,7 +13,7 @@ import { EmployeeService } from '../employee/employee.service';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  employee: Employee = new Employee("", "", "", "", "", "");
+  employee: Employee = new Employee(0, "", "", "", "", "", "", "");
   profilePicture: File;
 
   constructor(private formBuilder: FormBuilder, private http:HttpClient, private employeeService: EmployeeService) {
@@ -37,8 +37,6 @@ export class RegisterComponent implements OnInit {
     this.employee.password = this.registerForm.get('password')!.value;
     this.employee.phone = this.registerForm.get('phone')!.value;
     this.employee.photo = this.registerForm.get('photo')!.value;
-
-    // console.log(JSON.stringify(this.employee));
 
     // Send employee's data to server with post request.
     let resp = this.employeeService.registerEmployee(this.employee, this.profilePicture);

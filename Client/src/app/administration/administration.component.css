@@ -1,10 +1,46 @@
-
-
-
-.employees-list ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+.employeeList {
+  position: relative;
 }
 
+.employeeList__title {
+  text-align: center;
+}
+
+.employeeList__profiles {
+  border-radius: 0 0 12px 12px;
+  padding: 15px 15px 20px;
+}
+
+.employeeList__name {
+  text-align: center;
+  font-size: 20px;
+  align-self: center;
+  color: white;
+  letter-spacing: 0.64px;
+}
+
+.employeeList__profile {
+  padding: 0;
+  margin: 10px;
+  text-align: center;
+
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 5px 7px -1px whitesmoke;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98),
+    box-shadow 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98);
+  background-color: #0a66c2;
+  white-space: pre;
+  width: 20%;
+}
+.employeeList__profile:hover {
+  box-shadow: 0 9px 47px 11px rgba(27, 26, 26, 0.18);
+}
+
+ul {
+  text-align: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

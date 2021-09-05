@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AdminService } from '../admin/admin.service';
 import { EmployeeService } from '../employee/employee.service';
+import * as globals from '../globals';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +12,14 @@ import { EmployeeService } from '../employee/employee.service';
 })
 export class HomeComponent implements OnInit {
 
-  loginForm: FormGroup
-  tempEmployee: any
+  loginForm: FormGroup;
+  tempEmployee: any;
+
+  emailNotFound: boolean = false;
+  wrongPasswd: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private employeeService: EmployeeService, 
-    private router: Router) {
+    private router: Router, private adminService: AdminService) {
     this.loginForm = this.formBuilder.group({
       email: formBuilder.control(null, [Validators.required]),
       password: formBuilder.control(null, [Validators.required])
@@ -26,22 +31,56 @@ export class HomeComponent implements OnInit {
     let email = this.loginForm.get('email')?.value;
     let password = this.loginForm.get('password')?.value;
 
-    let resp = this.employeeService.loginEmployee(email, password);
-    resp.subscribe( 
-      (emp) => {console.log(JSON.stringify(emp));
-        this.router.navigate(['feed']);
-      }
-      , (err) => console.log(err)
-    );
+    if(email === globals.ADMIN_EMAIL){
+      let resp = this.adminService.loginAdmin(email, password);
+      resp.subscribe(
+        (adm) => {
+          console.log(JSON.stringify(adm));
+          this.router.navigate(['admin']);
+        },
+        (err) => {
+          console.log(err.status);
+          if(err.status == globals.EMAIL_NOT_FOUND) {
+            this.emailNotFound = true;
+          }
+          else if(err.status == globals.WRONG_PASSWD) {
+            this.wrongPasswd = true;
+          }
+        }
 
+      );
+    }
+    else{
+      let resp = this.employeeService.loginEmployee(email, password);
+      resp.subscribe( 
+        (emp) => {
+          console.log(JSON.stringify(emp));
+          this.router.navigate(['feed']);
+        }, 
+        (err) => {
+          console.log(err.status);
+          if(err.status == globals.EMAIL_NOT_FOUND) {
+            this.emailNotFound = true;
+          }
+          else if(err.status == globals.WRONG_PASSWD) {
+            this.wrongPasswd = true;
+          }
+        }
+      );
+    }
 
-    this.loginForm.reset();
+    this.loginForm.reset();    
 
   }
 
-  public control(name: string){
-    return this.loginForm.get(name);
+  // Used for UI purposes - user is notified if their email/password is invalid.
+  public tryEmail(): boolean {
+
+    this.emailNotFound = false;
+    this.wrongPasswd = false;
+    return true;
   }
+
 
 
   ngOnInit(): void {

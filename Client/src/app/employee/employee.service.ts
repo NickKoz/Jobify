@@ -39,7 +39,7 @@ export class EmployeeService {
 
 
   public loginEmployee(email: string, password: string) {
-    // return this.http.get<Employee>(this.employeeURL + '/find/' + email);
+
     let loginData = new HttpParams()
       .append('email', email)
       .append('password', password);
@@ -61,6 +61,26 @@ export class EmployeeService {
   public getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.employeeURL + '/all');
   }
+
+
+  public getEmployeePicture(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/picture');
+  }
+
+
+  public getEmployee(id: number) {
+    return this.http.get<Employee>(this.employeeURL + '/' + String(id));
+  }
+
+
+  public extractEmployee(data: Object): Employee {
+
+    let jsonString: string = JSON.stringify(data);
+    let emp: any = JSON.parse(jsonString);
+    return new Employee(emp.id, emp.name, emp.surname, emp.email,
+      emp.password, emp.jobTitle, emp.phone, emp.imageUrl);
+  }
+
 
   public extractEmployees(data: Object): Employee[] {
 

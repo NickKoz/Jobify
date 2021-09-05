@@ -1,12 +1,20 @@
 package com.webdev.jobify.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
 public class Administrator implements Serializable {
+
+    public Administrator(Long id, String name, String surname, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Administrator() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

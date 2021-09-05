@@ -25,7 +25,7 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
     NotFoundComponent,
     FeedComponent,
     AdministrationComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +51,16 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
       },
       {
         path: 'admin',
-        component: AdministrationComponent
+        children: [
+          {
+            path: '',
+            component: AdministrationComponent
+          },
+          {
+            path: ':id',
+            component: EmployeeDetailsComponent
+          }
+        ]
       },
       {
         path: '**', 

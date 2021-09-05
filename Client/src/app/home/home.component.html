@@ -1,20 +1,26 @@
 
 <div class="home-bar">
     <div class="home-bar-right">
-        <div>
-            <button type="button" class="button" routerLink="/register">Register</button>
-        </div>
+
+        <button type="button" class="button" routerLink="/register">Register</button>
+        
         <div class="login-container">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 
                 <input id="email" type="text" placeholder="Email" formControlName="email">
-                <span class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                <span class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched && tryEmail()">
                     Email is required!
+                </span>
+                <span class="error" *ngIf="emailNotFound">
+                    Email does not exist!
                 </span>
                 
                 <input id="password" type="password" placeholder="Password" formControlName="password">
-                <span class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                <span class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched && tryEmail()">
                     Password is required!
+                </span>
+                <span class="error" *ngIf="wrongPasswd">
+                    Wrong password!
                 </span>
 
                 <button class="button" [disabled]="loginForm.invalid" type="submit" >

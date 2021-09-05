@@ -1,7 +1,7 @@
 .header {
     background-color: white;
-    padding: 5px;
-    position: fixed;
+    padding: 0px;
+    position: relative;
 }
 
 .header > h2 {

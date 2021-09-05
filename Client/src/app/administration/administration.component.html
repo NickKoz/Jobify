@@ -1,12 +1,19 @@
 
-<div class="employees-list">
 
+<div class="employeeList">
+  <h1 class="employeeList__title">
+    <span class="employeeList__title">Employees</span>
+  </h1>
 
+  <div class="employeeList__profiles">
     <ul *ngFor="let emp of employees">
-
-        <li>{{emp.surname}}</li>
-
+      <li>
+        <button class="employeeList__profile" routerLink="/admin/{{ emp.id }}">
+          <span class="employeeList__name">
+            {{ emp.name }} {{ emp.surname }}</span
+          >
+        </button>
+      </li>
     </ul>
-
-
+  </div>
 </div>

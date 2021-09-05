@@ -5,6 +5,9 @@
 .home-bar {
     overflow: hidden;
     background-color: white;
+    position: absolute;
+    top:0;
+    right:0;
 }
 
 /* Style the topnav links */
@@ -38,8 +41,8 @@
 }
 
 .home-bar-right .login-container input {
-    width: 160px;
-    height: 25px;
+    width: 200px;
+    height: 28px;
     font-size: medium;
     padding-left: 10px;
     margin-bottom: 10px;

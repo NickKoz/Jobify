@@ -44,7 +44,7 @@ public class AdministratorController {
             return ResponseEntity.status(HttpStatus.OK).body(entityModel);
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Wrong password!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong password!");
 
     }
 

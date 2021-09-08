@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../_models/employee/employee';
-import { EmployeeService } from '../_models/employee/employee.service';
+import { EmployeeService } from '../_services/employee.service';
 
 @Component({
   selector: 'app-administration',
@@ -15,10 +15,11 @@ export class AdministrationComponent implements OnInit {
 
   ngOnInit(): void {
     let resp = this.employeeService.getEmployees();
-    resp.subscribe((emps) => {
-      this.employees = this.employeeService.extractEmployees(emps);
-      console.log(JSON.stringify(emps));
-    });
+    resp.subscribe(
+      (resp: any) => {
+      this.employees = resp._embedded.employeeList;
+      }
+    );
   }
 
 }

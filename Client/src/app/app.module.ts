@@ -14,6 +14,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { FeedComponent } from './feed/feed.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { EmployeeDetailsComponent } from './administration/employee-details/employee-details.component';
+import { AuthGuard } from './_auth/auth.guard'
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
     RouterModule.forRoot([
       {
         path: '', 
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'register', 
@@ -47,7 +49,8 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
       },
       {
         path: 'feed',
-        component: FeedComponent
+        component: FeedComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'admin',
@@ -60,7 +63,8 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
             path: ':id',
             component: EmployeeDetailsComponent
           }
-        ]
+        ],
+        canActivate: [AuthGuard]
       },
       {
         path: '**', 

@@ -6,8 +6,8 @@
     <div class="d-flex flex-column align-items-center text-center">
       <img [src]="employeePicture ? employeePicture : blankPicture" alt="Admin" class="rounded-circle" width="150">
       <div class="mt-3">
-        <h4>{{employee.name}} {{employee.surname}}</h4>
-        <p class="text-secondary mb-1">{{employee.jobTitle}}</p>
+        <h4>{{employee?.name}} {{employee?.surname}}</h4>
+        <p class="text-secondary mb-1">{{employee?.jobTitle}}</p>
         <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
       </div>
     </div>
@@ -25,7 +25,7 @@
             <h6 class="mb-0">Email</h6>
           </div>
           <div class="col-sm-9 text-secondary">
-            {{employee.email}}
+            {{employee?.email}}
           </div>
         </div>
 
@@ -36,7 +36,7 @@
             <h6 class="mb-0">Phone</h6>
           </div>
           <div class="col-sm-9 text-secondary">
-            {{employee.phone}}
+            {{employee?.phone}}
           </div>
         </div>
 

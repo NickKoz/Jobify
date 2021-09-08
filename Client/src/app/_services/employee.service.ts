@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Employee } from './employee';
+import { Employee } from '../_models/employee/employee';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators'
 import { Router } from '@angular/router';
@@ -72,22 +72,5 @@ export class EmployeeService {
     return this.http.get<Employee>(this.employeeURL + '/' + String(id));
   }
 
-
-  public extractEmployee(data: Object): Employee {
-
-    let jsonString: string = JSON.stringify(data);
-    let emp: any = JSON.parse(jsonString);
-    return new Employee(emp.id, emp.name, emp.surname, emp.email,
-      emp.password, emp.jobTitle, emp.phone, emp.imageUrl);
-  }
-
-
-  public extractEmployees(data: Object): Employee[] {
-
-    let jsonString: string = JSON.stringify(data);
-    let jsonObject: any = JSON.parse(jsonString);
-    return jsonObject._embedded.employeeList;
-
-  }
 
 }

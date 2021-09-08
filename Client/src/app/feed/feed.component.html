@@ -1,15 +1,60 @@
 
-<div class="feed-bar">
 
-    <ul>
-        <li><a>Home</a></li>
-        <li><a>Network</a></li>
-        <li><a>Jobs</a></li>
-        <li><a>Messaging</a></li>
-        <li><a>Notifications</a></li>
-    </ul>
-    
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
 
+
+
+
+<div class="top_navbar">
+  <input type="checkbox" id="check" />
+  <label for="check" class="checkbtn">
+    <i class="fas fa-bars"></i>
+  </label>
+
+ 
+  <ul>
+    <li class="active" [ngClass]="{ no_selected: !tabSelected[0], selected: tabSelected[0] }">
+      <a routerLink="/feed" (click)="selectTab(0)"><i class="fas fa-home icon-top_navbar"></i>Home</a>
+    </li>
+    <li [ngClass]="{ no_selected: !tabSelected[1], selected: tabSelected[1] }">
+      <a (click)="selectTab(1)"><span class="icon"><i class="fas fa-people-carry icon-top_navbar"></i>Network</span></a>
+    </li>
+    <li [ngClass]="{ no_selected: !tabSelected[2], selected: tabSelected[2] }">
+      <a (click)="selectTab(2)"><span class="icon"><i class="fas fa-suitcase icon-top_navbar"></i>Jobs</span></a>
+    </li>
+    <li [ngClass]="{ no_selected: !tabSelected[3], selected: tabSelected[3] }">
+      <a (click)="selectTab(3)"><span class="icon"><i class="fas fa-comment icon-top_navbar"></i>Messaging</span></a>
+    </li>
+    <li [ngClass]="{ no_selected: !tabSelected[4], selected: tabSelected[4] }">
+      <a (click)="selectTab(4)"><span class="icon"><i class="fa fa-bell icon-top_navbar"></i>Notifications</span></a>
+    </li>
+    <li [ngClass]="{ no_selected: !tabSelected[5], selected: tabSelected[5] }">
+      <a (click)="selectTab(5)"><span class="icon"><i class="icon-top_navbar"></i>Me</span></a>
+    </li>
+    <li>
+      <a><span class="icon"><i class="fa fa-gear icon-top_navbar"></i>Settings</span></a>
+    </li>
+    <li class="last">
+      <a><span class="icon"><i class="fa fa-sign-out icon-top_navbar"></i>Log out</span></a>
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+
+
+<div class="sidebar">
+  <div class="sidebar_top">
+    <img src="{{employee?.photo}}" class="sidebar_avatar">
+    <h2><a>{{employee?.name}} {{employee?.surname}}</a></h2>
+    <h4>{{employee?.jobTitle}}</h4>
+    <h3><a>Grow your network</a></h3>
+  </div>
 
 </div>

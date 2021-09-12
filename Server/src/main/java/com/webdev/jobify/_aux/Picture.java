@@ -1,4 +1,4 @@
-package com.webdev.jobify.model;
+package com.webdev.jobify._aux;
 
 public class Picture {
 

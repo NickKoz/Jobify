@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -37,9 +38,14 @@ public class Employee implements Serializable{
     private String phone;
     private String photo;
 
+    @ElementCollection
+    @CollectionTable(name = "skills", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "skill")
+    private List<String> skills;
+
     public Employee() {}
 
-    public Employee(String name, String surname, String password, String email, String phone, String photo){
+    public Employee(String name, String surname, String password, String email, String phone, String photo, List<String> skills){
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -47,6 +53,7 @@ public class Employee implements Serializable{
         this.jobTitle = null;
         this.phone = phone;
         this.photo = photo;
+        this.skills = skills;
     }
 
     public String getPassword() {
@@ -89,11 +96,11 @@ public class Employee implements Serializable{
         this.jobTitle = jobTitle;
     }
 
-    public String getImageUrl() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setImageUrl(String photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 
@@ -111,6 +118,14 @@ public class Employee implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 
     @Override
@@ -158,7 +173,7 @@ public class Employee implements Serializable{
             Files.write(destPath, bytes);
 
             // Update employee's data.
-            this.setImageUrl(picturePath);
+            this.setPhoto(picturePath);
         }
     }
 }

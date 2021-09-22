@@ -1,10 +1,49 @@
 
-<div class=header>
 
-    <div>
-        <a href="javascript:window.location.reload(true)">
-            <img class="logo" src="../../assets/Logos/Jobify-logos_transparent1.png" alt="Jobify">
-        </a>
-    </div>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+
     
+<div class="top_navbar">
+    <a href="javascript:window.location.reload(true)">
+        <img class="logo" src="../../assets/Logos/Jobify-logos_transparent1.png" alt="Jobify">
+    </a>
+    <input *ngIf="employee" type="checkbox" id="check" />
+    <label *ngIf="employee" for="check" class="checkbtn">
+        <i class="fas fa-bars"></i>
+    </label>
+    
+    
+    <ul *ngIf="employee">
+        <li class="active" [ngClass]="{ no_selected: !tabSelected[0], selected: tabSelected[0] }">
+        <a routerLink="/feed" (click)="selectTab(0)"><i class="fas fa-home icon-top_navbar"></i>Home</a>
+        </li>
+        <li [ngClass]="{ no_selected: !tabSelected[1], selected: tabSelected[1] }">
+        <a routerLink="/network" (click)="selectTab(1)"><span class="icon"><i class="fas fa-people-carry icon-top_navbar"></i>Network</span></a>
+        </li>
+        <li [ngClass]="{ no_selected: !tabSelected[2], selected: tabSelected[2] }">
+        <a (click)="selectTab(2)"><span class="icon"><i class="fas fa-suitcase icon-top_navbar"></i>Jobs</span></a>
+        </li>
+        <li [ngClass]="{ no_selected: !tabSelected[3], selected: tabSelected[3] }">
+        <a (click)="selectTab(3)"><span class="icon"><i class="fas fa-comment icon-top_navbar"></i>Messaging</span></a>
+        </li>
+        <li [ngClass]="{ no_selected: !tabSelected[4], selected: tabSelected[4] }">
+        <a (click)="selectTab(4)"><span class="icon"><i class="fa fa-bell icon-top_navbar"></i>Notifications</span></a>
+        </li>
+        
+        <a>
+        <div class="dropdown">
+            <i class="profile-picture-icon dropbtn" (click)="showDropdownMenu()">
+            <img [src]="employee?.photo"></i>
+            Me
+            <div class="dropdown-content" id="dropdown-menu">
+                <a><span class="icon">Settings</span></a>
+                <a (click)="onLogout()"><span class="icon">Log out</span></a>
+            </div>
+        </div>
+        </a>
+        
+    </ul>
 </div>

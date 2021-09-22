@@ -1,3 +1,5 @@
+import { Certificate } from '../certificate/certificate';
+import { Job } from '../job/job';
 
 
 export class Employee {
@@ -10,6 +12,10 @@ export class Employee {
     jobTitle: string;
     phone: string;
     photo: string;
+    jobs: Job[] = [];
+    certificates: Certificate[] = [];
+    skills: String[] = [];
+    connections: Employee[] = [];
 
 
     constructor(id: number, name: string, surname: string, email: string, password: string, 

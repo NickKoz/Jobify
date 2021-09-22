@@ -17,7 +17,7 @@ export class EmployeeDetailsComponent implements OnInit {
   employeeID: number;
   employee: Employee;
   employeePicture: any;
-  blankPicture: any = '../../assets/Photos/blank-profile-picture.png'
+  blankPicture: any = '../../assets/Photos/blank-profile-picture.png';
   private sub: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute, private employeeService: EmployeeService) { }

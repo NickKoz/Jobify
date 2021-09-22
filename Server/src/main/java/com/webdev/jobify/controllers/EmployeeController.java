@@ -1,19 +1,10 @@
 package com.webdev.jobify.controllers;
 
-import com.webdev.jobify.assemblers.CertificateModelAssembler;
-import com.webdev.jobify.assemblers.ConnectionModelAssembler;
-import com.webdev.jobify.assemblers.JobModelAssembler;
+import com.webdev.jobify.assemblers.*;
 import com.webdev.jobify.exception.UserNotFoundException;
-import com.webdev.jobify.model.Certificate;
-import com.webdev.jobify.model.Connection;
-import com.webdev.jobify.model.Employee;
-import com.webdev.jobify.assemblers.EmployeeModelAssembler;
+import com.webdev.jobify.model.*;
 import com.webdev.jobify._aux.Picture;
-import com.webdev.jobify.model.Job;
-import com.webdev.jobify.services.CertificateService;
-import com.webdev.jobify.services.ConnectionService;
-import com.webdev.jobify.services.EmployeeService;
-import com.webdev.jobify.services.JobService;
+import com.webdev.jobify.services.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -49,12 +40,18 @@ public class EmployeeController {
     private final ConnectionModelAssembler connectionAssembler;
     public final CertificateService certificateService;
     public final CertificateModelAssembler certificateAssembler;
+    private final MessageService messageService;
+    private final MessageModelAssembler messageAssembler;
+    private final JobAdService jobAdService;
+    private final JobAdModelAssembler jobAdAssembler;
 
 
     public EmployeeController(EmployeeService employeeService, EmployeeModelAssembler assembler,
                               JobModelAssembler jobAssembler, JobService jobService,
                               ConnectionService connectionService, ConnectionModelAssembler connectionAssembler,
-                              CertificateService certificateService, CertificateModelAssembler certificateAssembler) {
+                              CertificateService certificateService, CertificateModelAssembler certificateAssembler,
+                              MessageService messageService, MessageModelAssembler messageAssembler,
+                              JobAdService jobAdService, JobAdModelAssembler jobAdAssembler) {
         this.employeeService = employeeService;
         this.employeeAssembler = assembler;
         this.jobAssembler = jobAssembler;
@@ -63,6 +60,10 @@ public class EmployeeController {
         this.connectionAssembler = connectionAssembler;
         this.certificateService = certificateService;
         this.certificateAssembler = certificateAssembler;
+        this.messageService = messageService;
+        this.messageAssembler = messageAssembler;
+        this.jobAdService = jobAdService;
+        this.jobAdAssembler = jobAdAssembler;
     }
 
     @GetMapping("/all")
@@ -85,11 +86,11 @@ public class EmployeeController {
 
         Employee employee = employeeService.findEmployeeById(id);
         String pictureName = employee.getPhoto();
-        Path pictLocation = Paths.get(pictureName);
-
-        if(pictureName.isEmpty()){
+        if(pictureName == null){
             return null;
         }
+        Path pictLocation = Paths.get(pictureName);
+
 
         byte[] data = Files.readAllBytes(pictLocation);
 
@@ -98,7 +99,7 @@ public class EmployeeController {
         return new Picture(pictExtension, data);
     }
 
-    @GetMapping("/{id}/experience")
+    @GetMapping("/{id}/jobs")
     public CollectionModel<EntityModel<Job>> getEmployeeJobs(@PathVariable("id") Long id) {
         List<EntityModel<Job>> jobs = jobService.findJobsByEmployeeId(id).stream().map(jobAssembler::toModel)
                 .collect(Collectors.toList());
@@ -134,7 +135,46 @@ public class EmployeeController {
                 .collect(Collectors.toList());
 
         return CollectionModel.of(certificates, linkTo(methodOn(CertificateController.class).getAllCertificates()).withSelfRel());
+    }
 
+    @GetMapping("/{id}/skills")
+    public List<String> getEmployeeSkills(@PathVariable("id") Long id) {
+        Employee employee = employeeService.findEmployeeById(id);
+        return employee.getSkills();
+    }
+
+    @PostMapping("/addskill")
+    public ResponseEntity<?>addSkillToEmployee(@RequestParam("id") Long id, @RequestParam("skill")String skill) {
+
+        try{
+            Employee employee = employeeService.findEmployeeById(id);
+            LinkedList<String> employeeSkills = new LinkedList<>(employee.getSkills());
+
+            employeeSkills.push(skill);
+
+            employee.setSkills(employeeSkills);
+
+            employeeService.updateEmployee(employee);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill could not be added!");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("SKill added!");
+    }
+
+
+    @GetMapping("/{ids}/messages")
+    public CollectionModel<EntityModel<Message>> getEmployee1MessagesWithEmployee2(@PathVariable Long[] ids) {
+
+        Long id1 = ids[0];
+        Long id2 = ids[1];
+
+        List<EntityModel<Message>> messages = messageService.findMessagesOfEmployee1WithEmployee2(id1, id2).stream().map(messageAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(messages, linkTo(methodOn(MessageController.class).getAllMessages()).withSelfRel());
     }
 
 
@@ -174,7 +214,14 @@ public class EmployeeController {
 
         employee.updateProfilePicture(picture);
 
-        EntityModel<Employee> entityModel = employeeAssembler.toModel(employeeService.addEmployee(employee));
+        EntityModel<Employee> entityModel;
+
+        try {
+            entityModel = employeeAssembler.toModel(employeeService.addEmployee(employee));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User with email: " + employee.getEmail() + " already exists!");
+        }
 
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);

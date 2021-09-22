@@ -14,7 +14,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { FeedComponent } from './feed/feed.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { EmployeeDetailsComponent } from './administration/employee-details/employee-details.component';
-import { AuthGuard } from './_auth/auth.guard'
+import { AuthGuard } from './_auth/auth.guard';
+import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
+import { NetworkComponent } from './network/network.component'
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { AuthGuard } from './_auth/auth.guard'
     FeedComponent,
     AdministrationComponent,
     EmployeeDetailsComponent,
+    EmployeeProfileComponent,
+    NetworkComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,8 @@ import { AuthGuard } from './_auth/auth.guard'
       },
       {
         path: 'register', 
-        component: RegisterComponent
+        component: RegisterComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: '404', 
@@ -50,6 +55,11 @@ import { AuthGuard } from './_auth/auth.guard'
       {
         path: 'feed',
         component: FeedComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'network',
+        component: NetworkComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -64,6 +74,11 @@ import { AuthGuard } from './_auth/auth.guard'
             component: EmployeeDetailsComponent
           }
         ],
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'profile/:id',
+        component: EmployeeProfileComponent,
         canActivate: [AuthGuard]
       },
       {

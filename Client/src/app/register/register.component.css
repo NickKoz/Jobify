@@ -52,3 +52,7 @@
   filter: brightness(110%);
 }
 
+
+#emailExists {
+  padding-top: 25px;
+}

@@ -11,7 +11,7 @@ public interface CertificateRepo extends JpaRepository<Certificate, Long> {
 
     Certificate findCertificateById(Long id);
 
-    @Query(value = "select * from certificates c where c.employee_id = :employee_id", nativeQuery = true)
+    @Query(value = "select * from certificate c where c.employee_id = :employee_id", nativeQuery = true)
     List<Certificate> findCertificatesByEmployeeId(@Param("employee_id") Long employee_id);
 
 }

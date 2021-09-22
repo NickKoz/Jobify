@@ -1,0 +1,92 @@
+
+<app-header></app-header>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<section id="content" class="container" style="margin-top: 30px;">
+    <!-- Begin .page-heading -->
+    <div class="page-heading">
+        <div class="media clearfix">
+          <div class="media-left pr30">
+            <img [src]="employee?.photo">
+          </div>
+          <div class="media-body va-m">
+            <h2 class="media-heading">{{employee?.name}} {{employee?.surname}}</h2>
+            <h4 class="lead">Developer</h4>
+          </div>
+        </div>
+    </div>
+
+    <!-- Experience panel -->
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-icon">
+                <i class="fa fa-star"></i>
+            </span>
+            <span class="panel-title"> Experience</span>
+            <form>
+                <input class="button" type="submit" value="+">
+            </form>
+        </div>
+
+        <div class="panel-body pb5">
+
+            <ul *ngFor="let job of employee?.jobs">
+                <li *ngIf="!job.hidden">
+                  <h4>{{job.position}}</h4>
+                    <span class="text-muted">&nbsp;,&nbsp;{{job.type}}</span>
+                  <p class="text-muted"> {{job.location}}
+                    <br> {{job.company}},&nbsp; {{job.startDate}} {{job.endDate}}
+                  </p>
+                </li>
+              <hr class="short br-lighter">
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-icon">
+                <i class="fa fa-pencil"></i>
+            </span>
+            <span class="panel-title">Education</span>
+        </div>
+        <div class="panel-body pb5">
+
+            <ul *ngFor="let cert of employee?.certificates">
+                <li *ngIf="!cert.hidden">
+                    <h4>{{cert.degree}}</h4>
+                    <span class="text-muted"></span>
+                    <p class="text-muted"> {{cert.school}}, &nbsp; {{cert.field}}
+                        <br> {{cert.grade}}, &nbsp; {{cert.startDate}} {{cert.endDate}}
+                    </p>
+                </li>
+                <hr class="short br-lighter">
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-icon">
+                <i class="fa fa-trophy"></i>
+            </span>
+            <span class="panel-title"> My Skills</span>
+        </div>
+        
+        <div class="panel-body pb5">
+
+            <ul *ngFor="let skill of employee?.skills; let i = index">
+                <li>
+                    <span class="label label-primary mr5 mb10 ib lh15">{{skill}}</span>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+</section>

@@ -34,7 +34,11 @@ export class EmployeeService {
       formData.append('picture', profilePicture, profilePicture.name);
     }
     
-    return this.http.post(this.employeeURL + '/add', formData);
+    return this.http.post(this.employeeURL + '/add', formData)
+    .pipe(map(emp => {
+      localStorage.setItem('employee', JSON.stringify(emp));
+      return emp;
+    }));
   }
 
 
@@ -70,6 +74,23 @@ export class EmployeeService {
 
   public getEmployee(id: number) {
     return this.http.get<Employee>(this.employeeURL + '/' + String(id));
+  }
+
+
+  public getEmployeeJobs(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/jobs');
+  }
+
+  public getEmployeeCertificates(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/certificates');
+  }
+
+  public getEmployeeSkills(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/skills');
+  }
+
+  public getEmployeeConnections(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/connections');
   }
 
 

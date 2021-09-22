@@ -6,5 +6,9 @@
 
 .error{
     color: red;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    padding-bottom: 15px;
 }
 

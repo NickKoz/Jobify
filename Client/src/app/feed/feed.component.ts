@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from '../_models/employee/employee';
 import { EmployeeService } from '../_services/employee.service';
+import * as globals from '../globals'
 
 @Component({
   selector: 'app-feed',
@@ -11,7 +12,6 @@ import { EmployeeService } from '../_services/employee.service';
 export class FeedComponent implements OnInit {
 
   employee: any;
-  tabSelected: boolean[] = [false];
 
   constructor(private router: Router, private employeeService: EmployeeService) { }
 
@@ -22,6 +22,7 @@ export class FeedComponent implements OnInit {
     this.employeeService.getEmployeePicture(this.employee.id).subscribe(
       (res: any) => {
         if(res === null) {
+          this.employee.photo = globals.blankPicture;
           return;
         }
         let type = res.type;
@@ -29,25 +30,7 @@ export class FeedComponent implements OnInit {
       }
     );
 
-    if(this.router.url === '/feed') {
-      this.tabSelected[0] = true;
-    }
-
   }
-
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event: any) {
-  //   event.preventDefault();
-  //   this.router.navigate(['/feed']);
-  // }
-
-  public selectTab(tab: number) {
-    for (let i = 0; i < this.tabSelected.length; i++) {
-      this.tabSelected[i] = false;
-    }
-    this.tabSelected[tab] = true;
-  }
-
 
 
 }

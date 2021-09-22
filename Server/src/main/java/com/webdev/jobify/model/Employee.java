@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,9 +40,9 @@ public class Employee implements Serializable{
     private String photo;
 
     @ElementCollection
-    @CollectionTable(name = "skills", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "skills")
     @Column(name = "skill")
-    private List<String> skills;
+    private List<String> skills = new LinkedList<String>();
 
     public Employee() {}
 

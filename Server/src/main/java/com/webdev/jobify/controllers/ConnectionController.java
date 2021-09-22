@@ -34,7 +34,7 @@ public class ConnectionController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public EntityModel<Connection> getConnectionById(@PathVariable("id") Long id) {
         Connection connection = connectionService.findConnectionById(id);
         return assembler.toModel(connection);
@@ -48,7 +48,7 @@ public class ConnectionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addPendingConnection(@RequestParam("requester_id") Long requester_id, @RequestParam("receiver") Long receiver_id) {
+    public ResponseEntity<?> addPendingConnection(@RequestParam("requester") Long requester_id, @RequestParam("receiver") Long receiver_id) {
 
         EntityModel<Connection> entityModel;
         Connection connection = new Connection();

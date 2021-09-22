@@ -1,7 +1,6 @@
 package com.webdev.jobify.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
@@ -11,11 +10,13 @@ import java.sql.Date;
 
 enum TypeOfEmployment {
     FULL_TIME,
-    PART_TIME
+    PART_TIME,
+    INTERNSHIP,
+    VOLUNTEER
 }
 
 @Entity
-@Table(name = "jobs")
+@Table(name = "job")
 public class Job implements Serializable {
 
     @Id
@@ -43,9 +44,7 @@ public class Job implements Serializable {
     @Column(nullable = false)
     private boolean hidden;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="employee_id")
-    @JsonBackReference
+    @ManyToOne
     private Employee employee;
 
     public Job() {}

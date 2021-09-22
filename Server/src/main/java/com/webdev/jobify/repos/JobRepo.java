@@ -11,6 +11,6 @@ public interface JobRepo extends JpaRepository<Job, Long> {
 
     Job findJobById(Long id);
 
-    @Query(value = "select * from jobs j where j.employee_id = :employee_id", nativeQuery = true)
+    @Query(value = "select * from job j where j.employee_id = :employee_id", nativeQuery = true)
     List<Job> findJobsByEmployeeId(@Param("employee_id")Long employee_id);
 }

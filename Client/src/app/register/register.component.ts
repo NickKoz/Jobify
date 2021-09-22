@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Employee } from '../_models/employee/employee';
 import { EmployeeService } from '../_services/employee.service';
+import * as globals from '../globals';
 
 
 @Component({
@@ -15,8 +17,10 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   employee: Employee = new Employee(0, "", "", "", "", "", "", "");
   profilePicture: File;
+  emailAlreadyExists: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private http:HttpClient, private employeeService: EmployeeService) {
+  constructor(private formBuilder: FormBuilder, private http:HttpClient, private employeeService: EmployeeService, 
+    private router: Router) {
     this.registerForm = this.formBuilder.group({
       name: ['', [ Validators.required]],
       surname: ['', [ Validators.required]],
@@ -42,7 +46,18 @@ export class RegisterComponent implements OnInit {
     let resp = this.employeeService.registerEmployee(this.employee, this.profilePicture);
     
     // Subscribe response.
-    resp.subscribe((data) => {console.log("Data: " + JSON.stringify(data));});
+    resp.subscribe(
+      (emp) => {
+        console.log(JSON.stringify(emp));
+        this.router.navigate(['feed']);
+      },
+      (err) => {
+        console.log(err.status);
+        if(err.status == globals.CONFLICT){
+          this.emailAlreadyExists = true;
+        }
+      }
+    );
 
     // Reset form data.
     this.registerForm.reset();

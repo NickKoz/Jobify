@@ -1,0 +1,91 @@
+
+.employeeList__name {
+    text-align: center;
+    font-size: 20px;
+    align-self: center;
+    color: white;
+    letter-spacing: 0.64px;
+}
+  
+.employeeList__profile {
+    padding: 0;
+    margin: 10px;
+    text-align: center;
+
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 5px 7px -1px whitesmoke;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98),
+        box-shadow 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98);
+    background-color: #0a66c2;
+    white-space: pre;
+    width: 20%;
+}
+.employeeList__profile:hover {
+box-shadow: 0 9px 47px 11px rgba(27, 26, 26, 0.18);
+}
+
+
+
+
+.button-container {
+    list-style-type: none;
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row: 0px;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    grid-template-areas: "cl1 cl2 cl3 cl4";
+    background: rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    border-radius: 15px;
+  }
+  
+  .button-container > li {
+    width: 150px;
+    height: 200px;
+    float: left;
+    background: white;
+    margin: 10px;
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  .grid-container {
+    display: grid;
+  
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    grid-gap: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20px;
+    grid-template-areas: "cl1 cl2 cl3 cl4";
+  }
+  
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(44, 42, 42, 0.8);
+    border-radius: 20%;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+  
+  #content {
+    display: grid;
+  
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    grid-gap: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20px;
+    grid-template-areas: "cl1 cl2 cl3 cl4";
+  }
+  #content > * {
+    background: turquoise;
+    padding: 30px;
+  }

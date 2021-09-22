@@ -1,0 +1,13 @@
+<app-header></app-header>
+
+<div class="menu-container">
+    <ul class="button-container" *ngFor="let emp of employee?.connections">
+      <li>
+        <button class="employeeList__profile" routerLink="/profile/{{ emp.id }}">
+          <span class="employeeList__name">
+            {{ emp.name }} {{ emp.surname }}</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+

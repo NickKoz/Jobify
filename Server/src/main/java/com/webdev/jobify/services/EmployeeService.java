@@ -3,6 +3,7 @@ package com.webdev.jobify.services;
 import com.webdev.jobify.model.Employee;
 import com.webdev.jobify.repos.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import com.webdev.jobify.exception.UserNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +13,9 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+
     public final EmployeeRepo employeeRepo;
+
     @Autowired
     public EmployeeService(EmployeeRepo employeeRepo){
         this.employeeRepo = employeeRepo;
@@ -53,4 +56,13 @@ public class EmployeeService {
     public void deleteEmployee(Long id){
         employeeRepo.deleteEmployeeById(id);
     }
+
+    public List<String> findSkillsOfEmployee(Long id) {
+        return employeeRepo.findSkillsOfEmployee(id);
+    }
+
+    public List<Employee> findApplicantsUsingJobAdId(Long id) {
+        return employeeRepo.findApplicantsUsingJobAdId(id);
+    }
+
 }

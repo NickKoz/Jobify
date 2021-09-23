@@ -22,6 +22,10 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['404']);
       return false;
     }
+    else if(state.url === '/settings' && emp == null) {
+      this.router.navigate(['404']);
+      return false;
+    }
     else if(state.url === '/admin' && adm == null) {
       this.router.navigate(['404']);
       return false;

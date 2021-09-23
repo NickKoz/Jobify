@@ -197,3 +197,9 @@ ul > a {
   text-decoration: none;
   display: block;
 }
+
+.dropdown-content a:hover {
+  cursor: pointer;
+  background: none;
+  color: rgba(0, 0, 0, 0.4);
+}

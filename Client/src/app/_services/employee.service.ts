@@ -61,6 +61,21 @@ export class EmployeeService {
     this.router.navigate(['']);
   }
 
+  public updateEmployee(id: number, newEmail: string, newPassword: string) {
+
+    let changeData = new HttpParams()
+      .append('id', id);
+    
+    if(newEmail != null) {
+      changeData = changeData.append('email', newEmail);
+    }
+    if(newPassword != null) {
+      changeData = changeData.append('password', newPassword);
+    }
+
+    return this.http.put(this.employeeURL + '/update', changeData);
+  }
+
 
   public getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.employeeURL + '/all');

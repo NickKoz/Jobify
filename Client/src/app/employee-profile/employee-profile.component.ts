@@ -17,6 +17,7 @@ export class EmployeeProfileComponent implements OnInit {
   employeeID: number;
   employee: Employee;
   private sub: Subscription;
+  visible: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, 
     private employeeService: EmployeeService) { }
@@ -25,6 +26,18 @@ export class EmployeeProfileComponent implements OnInit {
     this.sub = this.activatedRoute.params.subscribe(
       (params) => {
         this.employeeID = parseInt(params['id']);
+
+        let tempEmp = localStorage.getItem('employee') as string;
+        this.employee = JSON.parse(tempEmp);
+        
+        // Check if user is at his profile or not.
+        if(this.employeeID === this.employee.id) {
+          this.visible = true;
+        }
+        else {
+          this.visible = false;
+        }
+
 
         // Getting employee's data.
         this.employeeService.getEmployee(this.employeeID).subscribe(

@@ -16,7 +16,8 @@ import { AdministrationComponent } from './administration/administration.compone
 import { EmployeeDetailsComponent } from './administration/employee-details/employee-details.component';
 import { AuthGuard } from './_auth/auth.guard';
 import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
-import { NetworkComponent } from './network/network.component'
+import { NetworkComponent } from './network/network.component';
+import { SettingsComponent } from './settings/settings.component'
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NetworkComponent } from './network/network.component'
     EmployeeDetailsComponent,
     EmployeeProfileComponent,
     NetworkComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,11 @@ import { NetworkComponent } from './network/network.component'
       {
         path: 'profile/:id',
         component: EmployeeProfileComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
         canActivate: [AuthGuard]
       },
       {

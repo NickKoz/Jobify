@@ -25,15 +25,15 @@
                 <i class="fa fa-star"></i>
             </span>
             <span class="panel-title"> Experience</span>
-            <form>
+            <!-- <form>
                 <input class="button" type="submit" value="+">
-            </form>
+            </form> -->
         </div>
 
         <div class="panel-body pb5">
 
             <ul *ngFor="let job of employee?.jobs">
-                <li *ngIf="!job.hidden">
+                <li *ngIf="!job.hidden || visible">
                   <h4>{{job.position}}</h4>
                     <span class="text-muted">&nbsp;,&nbsp;{{job.type}}</span>
                   <p class="text-muted"> {{job.location}}
@@ -56,14 +56,14 @@
         <div class="panel-body pb5">
 
             <ul *ngFor="let cert of employee?.certificates">
-                <li *ngIf="!cert.hidden">
+                <li *ngIf="!cert.hidden || visible">
                     <h4>{{cert.degree}}</h4>
                     <span class="text-muted"></span>
                     <p class="text-muted"> {{cert.school}}, &nbsp; {{cert.field}}
                         <br> {{cert.grade}}, &nbsp; {{cert.startDate}} {{cert.endDate}}
                     </p>
+                    <hr class="short br-lighter">
                 </li>
-                <hr class="short br-lighter">
             </ul>
 
         </div>

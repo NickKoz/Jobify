@@ -1,0 +1,40 @@
+<app-header></app-header>
+
+
+<div class="settings">
+
+    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+
+        Type your new email 
+        <div>
+            <input id="newΕmail" type="email" formControlName="newΕmail">
+            <div class="error" *ngIf="settingsForm.get('newΕmail')?.invalid">
+                Email is not valid!
+            </div>
+            <div class="error" *ngIf="emailAlreadyExists" id="emailExists">
+                Given email already exists! Try again.
+            </div>
+        </div>
+        
+        Type your new password
+        <div>
+            <input id="newPassword" type="password" formControlName="newPassword">
+        </div>
+        <div class="error" *ngIf="settingsForm.get('newPassword')?.invalid">
+            Password is not valid! Needs to be 8 to 16 characters.
+        </div>
+
+        <div>
+            <button class="button" [disabled]="settingsForm.invalid" type="submit" >
+                Save
+            </button>
+        </div>
+
+        <div class="success" *ngIf="successfulSave" id="saved">
+            Saved!
+        </div>
+
+    </form>
+
+
+</div>

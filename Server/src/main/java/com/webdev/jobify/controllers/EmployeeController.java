@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -228,24 +229,40 @@ public class EmployeeController {
 
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id){
-        Employee updatedEmployee = employeeService.employeeRepo.findEmployeeById(id)
-                .map(employee -> {
-                    employee.setName(newEmployee.getName());
-                    return employeeService.addEmployee(employee);
-                })
-                .orElseGet(() -> {
-                    newEmployee.setId(id);
-                    return employeeService.addEmployee(newEmployee);
-                });
 
-        EntityModel<Employee> entityModel = employeeAssembler.toModel(updatedEmployee);
+    @PutMapping("/update")
+    public ResponseEntity<?> updateEmployee(@RequestParam("id") Long id, @RequestParam(value = "email", required = false) String newEmail,
+                                            @RequestParam(value = "password", required = false) String newPassword){
+
+        Optional<Employee> updatedEmployee;
+        try {
+            updatedEmployee = employeeService.employeeRepo.findEmployeeById(id);
+        }
+        catch ( Exception e ) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with id: " + id + " was not found!");
+        }
+
+        if(newEmail != null && !newEmail.equals("")) {
+            if(employeeService.exists(newEmail)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email: " + newEmail + " already exists!");
+            }
+            updatedEmployee.get().setEmail(newEmail);
+            employeeService.updateEmployee(updatedEmployee.get());
+        }
+
+        if(newPassword != null) {
+            updatedEmployee.get().setPassword(newPassword);
+            employeeService.addEmployee(updatedEmployee.get());
+        }
+
+        EntityModel<Employee> entityModel = employeeAssembler.toModel(updatedEmployee.get());
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
+
+
     @PutMapping("/delete/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteEmployee(id);

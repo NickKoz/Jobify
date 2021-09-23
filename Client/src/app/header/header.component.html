@@ -33,17 +33,18 @@
         <a (click)="selectTab(4)"><span class="icon"><i class="fa fa-bell icon-top_navbar"></i>Notifications</span></a>
         </li>
         
-        <a>
+        
         <div class="dropdown">
             <i class="profile-picture-icon dropbtn" (click)="showDropdownMenu()">
             <img [src]="employee?.photo"></i>
             Me
             <div class="dropdown-content" id="dropdown-menu">
-                <a><span class="icon">Settings</span></a>
+                <a routerLink="/profile/{{employee?.id}}"><span class="icon">{{employee?.name}} {{employee?.surname}}</span></a>
+                <a routerLink="/settings"><span class="icon">Settings</span></a>
                 <a (click)="onLogout()"><span class="icon">Log out</span></a>
             </div>
         </div>
-        </a>
+        
         
     </ul>
 </div>

@@ -12,3 +12,11 @@
     padding-bottom: 15px;
 }
 
+.success {
+    color: green;
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    padding-bottom: 15px;
+}
+

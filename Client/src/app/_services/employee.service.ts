@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class EmployeeService {
 
-  private employeeURL: string = 'http://localhost:8080/employee';
+  private employeeURL: string = 'https://localhost:8080/employee';
 
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})

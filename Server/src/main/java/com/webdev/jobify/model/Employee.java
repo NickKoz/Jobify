@@ -144,6 +144,7 @@ public class Employee implements Serializable{
     public void updateProfilePicture(MultipartFile picture) throws IOException {
 
         if(picture == null) {
+            this.setPhoto(null);
             return;
         }
 

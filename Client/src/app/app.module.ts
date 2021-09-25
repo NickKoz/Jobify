@@ -17,7 +17,9 @@ import { EmployeeDetailsComponent } from './administration/employee-details/empl
 import { AuthGuard } from './_auth/auth.guard';
 import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
 import { NetworkComponent } from './network/network.component';
-import { SettingsComponent } from './settings/settings.component'
+import { SettingsComponent } from './settings/settings.component';
+import { NotificationsComponent } from './notifications/notifications.component'
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { SettingsComponent } from './settings/settings.component'
     EmployeeProfileComponent,
     NetworkComponent,
     SettingsComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,11 @@ import { SettingsComponent } from './settings/settings.component'
         canActivate: [AuthGuard]
       },
       {
+        path: 'notifications',
+        component: NotificationsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'admin',
         children: [
           {
@@ -94,7 +102,7 @@ import { SettingsComponent } from './settings/settings.component'
       },
     ])
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

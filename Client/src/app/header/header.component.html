@@ -30,7 +30,7 @@
         <a (click)="selectTab(3)"><span class="icon"><i class="fas fa-comment icon-top_navbar"></i>Messaging</span></a>
         </li>
         <li [ngClass]="{ no_selected: !tabSelected[4], selected: tabSelected[4] }">
-        <a (click)="selectTab(4)"><span class="icon"><i class="fa fa-bell icon-top_navbar"></i>Notifications</span></a>
+        <a routerLink="/notifications" (click)="selectTab(4)"><span class="icon"><i class="fa fa-bell icon-top_navbar"></i>Notifications</span></a>
         </li>
         
         

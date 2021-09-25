@@ -1,13 +1,28 @@
 <app-header></app-header>
 
-<div class="menu-container">
-    <ul class="button-container" *ngFor="let emp of employee?.connections">
+<div>
+
+  <h3 class="title">
+    Connections
+  </h3>
+
+  <div class="button-container">
+    
+    
+    <ul class="connection__List" *ngFor="let emp of employee?.connections">
       <li>
-        <button class="employeeList__profile" routerLink="/profile/{{ emp.id }}">
+        <img class="employee__image" [src]="emp?.photo"><br><br>
+        <a class="employeeList__profile" routerLink="/profile/{{ emp.id }}">
           <span class="employeeList__name">
             {{ emp.name }} {{ emp.surname }}</span>
-        </button>
+          </a>
+          <div *ngIf="emp.jobs?.length && !emp.jobs[0]?.hidden">
+            <br>
+            {{ emp.jobs[0]?.position }} at {{ emp.jobs[0]?.company }}
+          </div>
       </li>
     </ul>
   </div>
+      
+</div>
 

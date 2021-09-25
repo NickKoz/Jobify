@@ -4,8 +4,10 @@ import { Subscription } from 'rxjs';
 import { Employee } from '../_models/employee/employee';
 import { EmployeeService } from '../_services/employee.service';
 import * as globals from '../globals'
-import { Job } from '../_models/job/job';
+import { Job, TypeOfEmployment } from '../_models/job/job';
 import { Certificate } from '../_models/certificate/certificate';
+import { JobService } from '../_services/job.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-employee-profile',
@@ -18,9 +20,11 @@ export class EmployeeProfileComponent implements OnInit {
   employee: Employee;
   private sub: Subscription;
   visible: boolean;
+  type = TypeOfEmployment;
 
   constructor(private activatedRoute: ActivatedRoute, 
-    private employeeService: EmployeeService) { }
+    private employeeService: EmployeeService, private jobService: JobService,
+    private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe(
@@ -30,13 +34,27 @@ export class EmployeeProfileComponent implements OnInit {
         let tempEmp = localStorage.getItem('employee') as string;
         this.employee = JSON.parse(tempEmp);
         
-        // Check if user is at his profile or not.
+        // Check if user is at their profile or not.
         if(this.employeeID === this.employee.id) {
           this.visible = true;
         }
         else {
           this.visible = false;
         }
+
+        let startD = this.datePipe.transform(new Date(1990, 2, 20), 'dd-MM-yyyy') as string;
+
+        let job = new Job(null as any, 'Front End Developer', 'TestCompany', 'Athens', TypeOfEmployment.PART_TIME, startD, null as any, 
+        false);
+
+        // this.jobService.addJobToEmployee(job, this.employeeID).subscribe(
+        //   (resp) => {
+        //     console.log(resp);
+        //   },
+        //   (err) => {
+        //     console.log(err);
+        //   }
+        // );
 
 
         // Getting employee's data.
@@ -59,6 +77,8 @@ export class EmployeeProfileComponent implements OnInit {
             for(let job of jobList) {
               this.employee.jobs.push(new Job(job.id, job.position, job.company,
                 job.location, job.type, job.startDate, job.endDate, job.hidden));
+                
+              this.employee.jobs[this.employee.jobs.length - 1].beautify();
             }
             console.log(this.employee.jobs);
 

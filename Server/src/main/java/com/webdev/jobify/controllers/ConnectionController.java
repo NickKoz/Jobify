@@ -20,7 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:4200")
 @RequestMapping("/connection")
 public class ConnectionController {
 
@@ -54,6 +54,9 @@ public class ConnectionController {
         Connection connection = new Connection();
 
         try {
+            if(connectionService.existsEmployee1Employee2Connection(receiver_id, requester_id)){
+                throw new Exception("Connection exists!");
+            }
             Employee requester = employeeService.findEmployeeById(requester_id);
             Employee receiver = employeeService.findEmployeeById(receiver_id);
             connection.setRequester(requester);

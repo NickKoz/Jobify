@@ -1,54 +1,74 @@
 
+.title {
+  place-items: center;
+  display: grid;
+  font-size: 25px;
+  margin: 40px;
+}
+
+
+
+
 .employeeList__name {
     text-align: center;
-    font-size: 20px;
+    font-size: 19px;
     align-self: center;
-    color: white;
-    letter-spacing: 0.64px;
+    color: black;
+}
+
+.employee__image {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+
 }
   
 .employeeList__profile {
     padding: 0;
     margin: 10px;
     text-align: center;
-
     overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 0 5px 7px -1px whitesmoke;
     cursor: pointer;
-    transition: transform 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98),
-        box-shadow 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98);
-    background-color: #0a66c2;
-    white-space: pre;
-    width: 20%;
+    white-space: pre; 
 }
-.employeeList__profile:hover {
-box-shadow: 0 9px 47px 11px rgba(27, 26, 26, 0.18);
-}
+
 
 
 
 
 .button-container {
-    list-style-type: none;
-    display: grid;
-    grid-column-gap: 10px;
-    grid-row: 0px;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-top: 20px;
-    grid-template-areas: "cl1 cl2 cl3 cl4";
-    background: rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
-    border-radius: 15px;
-  }
+  /* display: grid;
+  grid-column-gap: 10px;
+  grid-row: 0px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+  grid-template-areas: "cl1 cl2 cl3 cl4";
+  overflow-y: auto;
+  border-radius: 15px; */
+  /* overflow-y: auto; */
+  background: rgba(0, 0, 0, 0.15);
+  list-style-type: none;
+  width: 100%;
+  height: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(auto-fill, 220px);
+  grid-row-gap: .5em;
+  grid-column-gap: 1em;
+}
+
+.connection__List {
+  list-style-type: none;
+}
   
-  .button-container > li {
-    width: 150px;
-    height: 200px;
+.connection__List > li {
+    width: 200px;
+    height: 180px;
     float: left;
     background: white;
-    margin: 10px;
+    margin: 15px;
     border-radius: 15px;
     text-align: center;
   }

@@ -21,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:4200")
 @RequestMapping("/job")
 public class JobController {
 

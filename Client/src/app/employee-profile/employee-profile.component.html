@@ -25,9 +25,32 @@
                 <i class="fa fa-star"></i>
             </span>
             <span class="panel-title"> Experience</span>
-            <!-- <form>
-                <input class="button" type="submit" value="+">
-            </form> -->
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="panel-body pb5">
@@ -35,7 +58,7 @@
             <ul *ngFor="let job of employee?.jobs">
                 <li *ngIf="!job.hidden || visible">
                   <h4>{{job.position}}</h4>
-                    <span class="text-muted">&nbsp;,&nbsp;{{job.type}}</span>
+                    <span class="text-muted">&nbsp;,&nbsp;{{type[job.type]}}</span>
                   <p class="text-muted"> {{job.location}}
                     <br> {{job.company}},&nbsp; {{job.startDate}} {{job.endDate}}
                   </p>

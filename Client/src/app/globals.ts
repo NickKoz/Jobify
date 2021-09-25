@@ -53,6 +53,9 @@ export function findMonth(month: string): string {
   else if(month === Months.SEPTEMBER){
     return 'September';
   }
+  else if(month === Months.OCTOBER){
+    return 'October';
+  }
   else if(month === Months.NOVEMBER){
     return 'November';
   }

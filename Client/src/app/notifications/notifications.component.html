@@ -1,0 +1,23 @@
+<app-header></app-header>
+
+
+<div class="requests">
+    <h3>
+        Connection Requests
+    </h3>
+
+    <ul class="button-container" *ngFor="let emp of pendingConnections">
+
+        <li>
+            <a class="employeeList__profile" routerLink="/profile/{{emp.id}}">
+                <span class="employeeList__name">
+                    {{ emp.name }} {{ emp.surname }}</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+</div>
+
+

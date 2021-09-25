@@ -108,5 +108,9 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + '/' + String(id) + '/connections');
   }
 
+  public getEmployeePendingConnections(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/connections/pending');
+  }
+
 
 }

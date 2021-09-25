@@ -29,7 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:4200")
 @RequestMapping("/employee")
 public class EmployeeController {
 
@@ -45,6 +45,7 @@ public class EmployeeController {
     private final MessageModelAssembler messageAssembler;
     private final JobAdService jobAdService;
     private final JobAdModelAssembler jobAdAssembler;
+    private final PostService postService;
 
 
     public EmployeeController(EmployeeService employeeService, EmployeeModelAssembler assembler,
@@ -52,7 +53,7 @@ public class EmployeeController {
                               ConnectionService connectionService, ConnectionModelAssembler connectionAssembler,
                               CertificateService certificateService, CertificateModelAssembler certificateAssembler,
                               MessageService messageService, MessageModelAssembler messageAssembler,
-                              JobAdService jobAdService, JobAdModelAssembler jobAdAssembler) {
+                              JobAdService jobAdService, JobAdModelAssembler jobAdAssembler, PostService postService) {
         this.employeeService = employeeService;
         this.employeeAssembler = assembler;
         this.jobAssembler = jobAssembler;
@@ -65,6 +66,7 @@ public class EmployeeController {
         this.messageAssembler = messageAssembler;
         this.jobAdService = jobAdService;
         this.jobAdAssembler = jobAdAssembler;
+        this.postService = postService;
     }
 
     @GetMapping("/all")
@@ -87,7 +89,7 @@ public class EmployeeController {
 
         Employee employee = employeeService.findEmployeeById(id);
         String pictureName = employee.getPhoto();
-        if(pictureName == null){
+        if(pictureName == null || pictureName.isEmpty()){
             return null;
         }
         Path pictLocation = Paths.get(pictureName);
@@ -124,6 +126,23 @@ public class EmployeeController {
         }
 
         List<EntityModel<Employee>> result = connectedEmployees.stream().map(employeeAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(result, linkTo(methodOn(EmployeeController.class).getAllEmployees()).withSelfRel());
+    }
+
+    @GetMapping("/{id}/connections/pending")
+    public CollectionModel<EntityModel<Employee>> getEmployeePendingConnections(@PathVariable("id") Long id) {
+
+        List<Connection> pendingConnections = connectionService.findPendingConnectionsOfEmployee(id);
+
+        List<Employee> pendingEmployees = new LinkedList<>();
+
+        for(Connection c : pendingConnections) {
+            pendingEmployees.add(c.getRequester());
+        }
+
+        List<EntityModel<Employee>> result = pendingEmployees.stream().map(employeeAssembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(result, linkTo(methodOn(EmployeeController.class).getAllEmployees()).withSelfRel());
@@ -177,6 +196,10 @@ public class EmployeeController {
 
         return CollectionModel.of(messages, linkTo(methodOn(MessageController.class).getAllMessages()).withSelfRel());
     }
+
+//    @GetMapping("/{ids}/posts")
+
+
 
 
     @PostMapping("/login")

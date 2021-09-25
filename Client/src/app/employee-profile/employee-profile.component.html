@@ -14,6 +14,11 @@
           <div class="media-body va-m">
             <h2 class="media-heading">{{employee?.name}} {{employee?.surname}}</h2>
             <h4 class="lead">Developer</h4>
+            <br>
+            <button mat-flat-button [disabled]="pendingRequest || requestSent" 
+                [ngClass]="{ not_following : !requestSent || pendingRequest , following : requestSent}"
+                (click)="handleFollow()" *ngIf="!visible">
+            {{ followMessage }}</button>
           </div>
         </div>
     </div>
@@ -26,7 +31,7 @@
             </span>
             <span class="panel-title"> Experience</span>
             <!-- Trigger the modal with a button -->
-            <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+            <button type="button" class="btn" data-toggle="modal" data-target="#myModal" *ngIf="visible">
                 <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
 

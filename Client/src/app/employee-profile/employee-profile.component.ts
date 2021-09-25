@@ -8,6 +8,7 @@ import { Job, TypeOfEmployment } from '../_models/job/job';
 import { Certificate } from '../_models/certificate/certificate';
 import { JobService } from '../_services/job.service';
 import { DatePipe } from '@angular/common';
+import { ConnectionService } from '../_services/connection.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -21,10 +22,13 @@ export class EmployeeProfileComponent implements OnInit {
   private sub: Subscription;
   visible: boolean;
   type = TypeOfEmployment;
+  pendingRequest: boolean;
+  requestSent: boolean;
+  followMessage: string;
 
   constructor(private activatedRoute: ActivatedRoute, 
     private employeeService: EmployeeService, private jobService: JobService,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe, private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe(
@@ -42,10 +46,10 @@ export class EmployeeProfileComponent implements OnInit {
           this.visible = false;
         }
 
-        let startD = this.datePipe.transform(new Date(1990, 2, 20), 'dd-MM-yyyy') as string;
+        // let startD = this.datePipe.transform(new Date(1990, 2, 20), 'dd-MM-yyyy') as string;
 
-        let job = new Job(null as any, 'Front End Developer', 'TestCompany', 'Athens', TypeOfEmployment.PART_TIME, startD, null as any, 
-        false);
+        // let job = new Job(null as any, 'Front End Developer', 'TestCompany', 'Athens', TypeOfEmployment.PART_TIME, startD, null as any, 
+        // false);
 
         // this.jobService.addJobToEmployee(job, this.employeeID).subscribe(
         //   (resp) => {
@@ -131,8 +135,40 @@ export class EmployeeProfileComponent implements OnInit {
             this.employee.photo = 'data:image/' + String(type) + ';base64,' + res.bytes;
           }
         );
-      });
-      
+        
+        this.connectionService.getConnection(this.employeeID, this.employee.id).subscribe(
+          (resp: any) => {
+            this.requestSent = true;
+            this.pendingRequest = resp.pending;
+            
+            if(!this.pendingRequest) {
+              this.followMessage = 'Following';
+            }
+            else {
+              this.followMessage = 'Sent';
+            }
+            
+          },
+          (err) => {
+            this.requestSent = false;
+            this.pendingRequest = false;
+            this.followMessage = 'Follow';
+          }
+          );
+          
+    });
   }
+
+
+  public handleFollow() {
+
+    let tempEmp = localStorage.getItem('employee') as string;
+    this.employee = JSON.parse(tempEmp);
+
+    this.connectionService.addPendingConnection(this.employee.id, this.employeeID).subscribe();
+
+    window.location.reload();
+  }
+
 
 }

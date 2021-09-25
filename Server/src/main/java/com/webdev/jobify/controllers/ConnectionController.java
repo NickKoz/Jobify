@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -40,6 +41,17 @@ public class ConnectionController {
         return assembler.toModel(connection);
     }
 
+    @GetMapping("/employees/{ids}")
+    public EntityModel<Connection> getConnectionByEmployees(@PathVariable Long[] ids) {
+        Long id1 = ids[0];
+        Long id2 = ids[1];
+
+        Connection connection = connectionService.findConnectionOfEmployee1Employee2(id1, id2);
+
+        return assembler.toModel(connection);
+    }
+
+
     @GetMapping("/all")
     public CollectionModel<EntityModel<Connection>> getAllConnections() {
         List<EntityModel<Connection>> connections = connectionService.findAllConnections().stream().map(assembler::toModel)
@@ -54,7 +66,13 @@ public class ConnectionController {
         Connection connection = new Connection();
 
         try {
-            if(connectionService.existsEmployee1Employee2Connection(receiver_id, requester_id)){
+
+            if(Objects.equals(requester_id, receiver_id)) {
+                throw new Exception("Connection with same IDs!");
+            }
+
+
+            if(connectionService.findConnectionOfEmployee1Employee2(receiver_id, requester_id) != null){
                 throw new Exception("Connection exists!");
             }
             Employee requester = employeeService.findEmployeeById(requester_id);
@@ -73,9 +91,10 @@ public class ConnectionController {
     }
 
     @PutMapping("/accept")
-    public ResponseEntity<?> acceptConnection(@RequestParam(value = "connection_id") Long connection_id){
+    public ResponseEntity<?> acceptConnection(@RequestParam(value = "receiver") Long receiver_id,
+                                              @RequestParam(value = "requester") Long requester_id){
 
-        Connection updatedConnection = connectionService.findConnectionById(connection_id);
+        Connection updatedConnection = connectionService.findConnectionOfEmployee1Employee2(receiver_id, requester_id);
         updatedConnection.setPending(false);
 
         connectionService.addConnection(updatedConnection);
@@ -85,6 +104,18 @@ public class ConnectionController {
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
+    }
+
+
+    @PutMapping("/delete")
+    public ResponseEntity<?> removeConnection(@RequestParam(value = "receiver") Long receiver_id,
+                                              @RequestParam(value = "requester") Long requester_id) {
+
+        Connection updatedConnection = connectionService.findConnectionOfEmployee1Employee2(receiver_id, requester_id);
+
+        connectionService.removeConnection(updatedConnection.getId());
+
+        return ResponseEntity.noContent().build();
     }
 
 

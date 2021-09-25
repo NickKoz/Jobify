@@ -14,6 +14,18 @@ h4 {
   display: inline-block;
 }
 
+.mat-flat-button {
+  color: white;
+}
+
+.not_following {
+  background-color: #0a66c2;
+}
+
+.following {
+  background-color: #7cabdb;
+}
+
 
 img {
     border-radius: 50%;

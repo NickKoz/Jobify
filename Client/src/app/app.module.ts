@@ -20,6 +20,7 @@ import { NetworkComponent } from './network/network.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NotificationsComponent } from './notifications/notifications.component'
 import { DatePipe } from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatButtonModule,
     RouterModule.forRoot([
       {
         path: '', 

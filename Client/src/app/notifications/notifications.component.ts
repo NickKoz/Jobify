@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../_models/employee/employee';
+import { ConnectionService } from '../_services/connection.service';
 import { EmployeeService } from '../_services/employee.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class NotificationsComponent implements OnInit {
   pendingConnections: Employee[] = [];
   employee: Employee;
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService, 
+    private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
     let tempEmp = localStorage.getItem('employee') as string;
@@ -34,5 +36,18 @@ export class NotificationsComponent implements OnInit {
     );
 
   }
+
+  public handleRequest(accept: boolean, requester: number) {
+
+    if(accept) {
+      this.connectionService.acceptConnection(this.employee.id, requester).subscribe();
+    }
+    else {
+      this.connectionService.deleteConnection(this.employee.id, requester).subscribe();
+    }
+    window.location.reload();
+  }
+
+
 
 }

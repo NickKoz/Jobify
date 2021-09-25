@@ -30,8 +30,8 @@ public class ConnectionService {
         return connectionRepo.save(connection);
     }
 
-    public boolean existsEmployee1Employee2Connection(Long id1, Long id2) {
-        return connectionRepo.findConnectionEmployee1Employee2(id1, id2) != null;
+    public Connection findConnectionOfEmployee1Employee2(Long id1, Long id2) {
+        return connectionRepo.findConnectionOfEmployee1Employee2(id1, id2);
     }
 
     public List<Connection> findConnectionsOfEmployee(Long employee_id) {
@@ -40,6 +40,10 @@ public class ConnectionService {
 
     public List<Connection> findPendingConnectionsOfEmployee(Long employee_id) {
         return connectionRepo.findPendingConnectionsOfEmployee(employee_id);
+    }
+
+    public void removeConnection(Long id) {
+        connectionRepo.deleteById(id);
     }
 
 }

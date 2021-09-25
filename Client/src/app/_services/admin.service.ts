@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 })
 export class AdminService {
 
-  private adminURL: string = 'http://localhost:8080/admin';
+  private adminURL: string = 'https://localhost:8080/admin';
 
   constructor(private http: HttpClient, private router: Router) { }
 

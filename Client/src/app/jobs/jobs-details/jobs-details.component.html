@@ -1,0 +1,36 @@
+<app-header></app-header>
+
+
+<div class="jobAd">
+
+    <h3 class="position">
+    {{jobAd?.position}}
+    </h3>
+
+    <div class="details">
+        {{jobAd?.company}}, &nbsp; {{jobAd?.location}} &nbsp; {{jobAd?.startDate}} <br>
+        {{jobAd?.typeString}} <br>
+        Posted by: &nbsp;{{jobAd.creator?.name}} {{jobAd.creator?.surname}}
+    </div>
+
+    <button mat-flat-button [disabled]="alreadyApplied" 
+    [ngClass]="{ applied : alreadyApplied, not_applied : !alreadyApplied}"
+     *ngIf="visible" (click)="onApply()">
+        Apply</button>
+    
+
+    <h3>
+        Applicants
+    </h3>
+    <div *ngIf="!visible" class="applicants__List">
+        <ul *ngFor="let applic of applicants">
+            <li>
+                <a class="applicant_details" routerLink="/profile/{{applic?.id}}">
+                    {{applic?.name}}
+                    {{applic?.surname}}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>

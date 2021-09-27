@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.sql.Date;
 
 
-enum TypeOfEmployment {
-    FULL_TIME,
-    PART_TIME,
-    INTERNSHIP,
-    VOLUNTEER
+class TypeOfEmployment {
+    public static final int FULL_TIME = 0;
+    public static final int PART_TIME = 1;
+    public static final int INTERNSHIP = 2;
+    public static final int VOLUNTEER = 3;
 }
 
 @Entity
@@ -32,13 +32,12 @@ public class Job implements Serializable {
 
     private String location;
 
-    @Enumerated(EnumType.STRING)
-    private TypeOfEmployment type;
+    private int type;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @Column(nullable = false)
@@ -49,7 +48,7 @@ public class Job implements Serializable {
 
     public Job() {}
 
-    public Job(Long id, String position, String company, TypeOfEmployment type, Date startDate, Date endDate, boolean hidden, Employee employee) {
+    public Job(Long id, String position, String company, int type, Date startDate, Date endDate, boolean hidden, Employee employee) {
         this.id = id;
         this.position = position;
         this.company = company;
@@ -92,11 +91,11 @@ public class Job implements Serializable {
         this.location = location;
     }
 
-    public TypeOfEmployment getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(TypeOfEmployment type) {
+    public void setType(int type) {
         this.type = type;
     }
 

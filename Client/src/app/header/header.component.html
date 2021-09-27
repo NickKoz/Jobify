@@ -24,7 +24,7 @@
         <a routerLink="/network" (click)="selectTab(1)"><span class="icon"><i class="fas fa-people-carry icon-top_navbar"></i>Network</span></a>
         </li>
         <li [ngClass]="{ no_selected: !tabSelected[2], selected: tabSelected[2] }">
-        <a (click)="selectTab(2)"><span class="icon"><i class="fas fa-suitcase icon-top_navbar"></i>Jobs</span></a>
+        <a routerLink="/jobs" (click)="selectTab(2)"><span class="icon"><i class="fas fa-suitcase icon-top_navbar"></i>Jobs</span></a>
         </li>
         <li [ngClass]="{ no_selected: !tabSelected[3], selected: tabSelected[3] }">
         <a (click)="selectTab(3)"><span class="icon"><i class="fas fa-comment icon-top_navbar"></i>Messaging</span></a>

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Employee } from 'src/app/_models/employee/employee';
 import { EmployeeService } from 'src/app/_services/employee.service';
+import * as globals from '../../globals';
 
 
 
@@ -16,8 +17,6 @@ export class EmployeeDetailsComponent implements OnInit {
 
   employeeID: number;
   employee: Employee;
-  employeePicture: any;
-  blankPicture: any = '../../assets/Photos/blank-profile-picture.png';
   private sub: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute, private employeeService: EmployeeService) { }
@@ -37,10 +36,11 @@ export class EmployeeDetailsComponent implements OnInit {
         this.employeeService.getEmployeePicture(this.employeeID).subscribe(
           (res: any) => {
             if(res === null) {
+              this.employee.photo = globals.blankPicture;
               return;
             }
             let type = res.type;
-            this.employeePicture = 'data:image/' + String(type) + ';base64,' + res.bytes;
+            this.employee.photo = 'data:image/' + String(type) + ';base64,' + res.bytes;
           }
         );
     });

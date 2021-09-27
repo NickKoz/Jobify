@@ -1,6 +1,7 @@
 package com.webdev.jobify.controllers;
 
 
+import com.webdev.jobify.assemblers.EmployeeModelAssembler;
 import com.webdev.jobify.assemblers.JobAdModelAssembler;
 import com.webdev.jobify.model.Employee;
 import com.webdev.jobify.model.JobAd;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,17 +29,28 @@ public class JobAdController {
     private final JobAdService jobAdService;
     private final JobAdModelAssembler assembler;
     private final EmployeeService employeeService;
+    private final EmployeeModelAssembler employeeAssembler;
 
-    public JobAdController(JobAdService jobAdService, JobAdModelAssembler assembler, EmployeeService employeeService) {
+    public JobAdController(JobAdService jobAdService, JobAdModelAssembler assembler, EmployeeService employeeService, EmployeeModelAssembler employeeAssembler) {
         this.jobAdService = jobAdService;
         this.assembler = assembler;
         this.employeeService = employeeService;
+        this.employeeAssembler = employeeAssembler;
     }
 
     @GetMapping("/{id}")
     public EntityModel<JobAd> getJobAdById(@PathVariable("id") Long id) {
         JobAd jobAd = jobAdService.findJobAdById(id);
         return assembler.toModel(jobAd);
+    }
+
+    @GetMapping("/{id}/applicants")
+    public CollectionModel<EntityModel<Employee>> getJobAdApplicants(@PathVariable("id") Long id) {
+        JobAd jobAd = jobAdService.findJobAdById(id);
+        List<EntityModel<Employee>> applicants = jobAd.getApplicants().stream().map(employeeAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(applicants, linkTo(methodOn(EmployeeController.class).getAllEmployees()).withSelfRel());
     }
 
     @GetMapping("/all")
@@ -64,6 +77,36 @@ public class JobAdController {
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
+
+    @PutMapping("/addapplicant")
+    public ResponseEntity<?> addApplicantToJobAd(@RequestParam("jobad_id") Long id, @RequestParam("applicant_id") Long emp_id) {
+
+        JobAd updatedJobAd;
+        Employee applicant;
+        try {
+            updatedJobAd = jobAdService.findJobAdById(id);
+            applicant = employeeService.findEmployeeById(emp_id);
+
+            LinkedList<Employee> applicants = new LinkedList<>(updatedJobAd.getApplicants());
+
+            applicants.push(applicant);
+
+            updatedJobAd.setApplicants(applicants);
+
+            jobAdService.saveJobAd(updatedJobAd);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot add applicant!");
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("Applicant added!");
+    }
+
+
+
+
+
 
 
 

@@ -6,12 +6,13 @@ export class Job {
     position: string;
     company: string;
     location: string;
-    type: TypeOfEmployment;
+    type: TypeOfEmployement;
+    typeString: string;
     startDate: string;
     endDate: string;
     hidden: boolean;
 
-    constructor(id: number, position: string, company: string, location: string, type: TypeOfEmployment,
+    constructor(id: number, position: string, company: string, location: string, type: TypeOfEmployement,
         startDate: string, endDate: string, hidden: boolean) {
         this.id = id;
         this.position = position;
@@ -24,18 +25,19 @@ export class Job {
     }
 
     public beautify() {
-      // if(this.type === TypeOfEmployment.FULL_TIME){
-      //   this.type = 'Full-time'
-      // }
-      // else if(this.type === TypeOfEmployment.PART_TIME){
-      //   this.type = 'Part-time'
-      // }
-      // else if(this.type === TypeOfEmployment.INTERNSHIP){
-      //   this.type = 'Internship'
-      // }
-      // else if(this.type === TypeOfEmployment.VOLUNTEER){
-      //   this.type = 'Volunteer'
-      // }
+
+      if(this.type === TypeOfEmployement.FULL_TIME){
+        this.typeString = 'Full-time';
+      }
+      else if(this.type === TypeOfEmployement.PART_TIME){
+        this.typeString = 'Part-time';
+      }
+      else if(this.type === TypeOfEmployement.INTERNSHIP){
+        this.typeString = 'Internship';
+      }
+      else if(this.type === TypeOfEmployement.VOLUNTEER){
+        this.typeString = 'Volunteer';
+      }
       
       if(this.startDate != null) {
         let month = this.startDate.split('-')[1];
@@ -52,9 +54,9 @@ export class Job {
 
 }
 
-export enum TypeOfEmployment {
-  FULL_TIME = 'FULL_TIME',
-  PART_TIME = 'PART_TIME',
-  INTERNSHIP = 'INTERNSHIP',
-  VOLUNTEER = 'VOLUNTEER',
+export enum TypeOfEmployement {
+  FULL_TIME = 0,
+  PART_TIME = 1,
+  INTERNSHIP = 2,
+  VOLUNTEER = 3
 }

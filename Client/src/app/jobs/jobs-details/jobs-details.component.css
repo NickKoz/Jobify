@@ -1,0 +1,57 @@
+
+.jobAd {
+    text-align: center;
+}
+
+
+.position {
+    margin-top: 50px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+
+.details {
+    margin: 30px;
+    margin-bottom: 50px;
+    font-size: large;
+}
+
+.mat-flat-button {
+    color: white;
+}
+
+.applied {
+    background-color: #7cabdb;
+}
+
+.not_applied {
+    background-color: #0a66c2;
+}
+
+.applicants__List {
+    /* padding: 15px 15px 20px; */
+    height: 150px;
+    /* width: 250px; */
+    overflow-x: auto;
+    margin: 60px;
+}
+
+
+.applicants__List > ul {
+  list-style-type: none;
+}
+
+
+.applicant_details {
+    font-size: 18px;
+    align-self: center;
+    letter-spacing: 0.64px;
+    text-align: center;
+  
+    overflow: hidden;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: white;
+    white-space: pre;
+}

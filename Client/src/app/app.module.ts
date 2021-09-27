@@ -21,6 +21,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { NotificationsComponent } from './notifications/notifications.component'
 import { DatePipe } from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
+import { JobsComponent } from './jobs/jobs.component';
+import { JobsDetailsComponent } from './jobs/jobs-details/jobs-details.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import {MatButtonModule} from '@angular/material/button';
     NetworkComponent,
     SettingsComponent,
     NotificationsComponent,
+    JobsComponent,
+    JobsDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +71,20 @@ import {MatButtonModule} from '@angular/material/button';
       {
         path: 'network',
         component: NetworkComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'jobs',
+        children: [
+          {
+            path: '',
+            component: JobsComponent
+          },
+          {
+            path: ':id',
+            component: JobsDetailsComponent
+          }
+        ],
         canActivate: [AuthGuard]
       },
       {

@@ -4,11 +4,12 @@ import { Subscription } from 'rxjs';
 import { Employee } from '../_models/employee/employee';
 import { EmployeeService } from '../_services/employee.service';
 import * as globals from '../globals'
-import { Job, TypeOfEmployment } from '../_models/job/job';
+import { Job, TypeOfEmployement } from '../_models/job/job';
 import { Certificate } from '../_models/certificate/certificate';
 import { JobService } from '../_services/job.service';
 import { DatePipe } from '@angular/common';
 import { ConnectionService } from '../_services/connection.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-profile',
@@ -17,18 +18,55 @@ import { ConnectionService } from '../_services/connection.service';
 })
 export class EmployeeProfileComponent implements OnInit {
 
+  jobForm: FormGroup;
   employeeID: number;
   employee: Employee;
   private sub: Subscription;
   visible: boolean;
-  type = TypeOfEmployment;
+  type: TypeOfEmployement;
   pendingRequest: boolean;
   requestSent: boolean;
   followMessage: string;
 
   constructor(private activatedRoute: ActivatedRoute, 
     private employeeService: EmployeeService, private jobService: JobService,
-    private datePipe: DatePipe, private connectionService: ConnectionService) { }
+    private datePipe: DatePipe, private connectionService: ConnectionService, 
+    private formBuilder: FormBuilder) {
+
+      this.jobForm = this.formBuilder.group({
+        position: ['', [ Validators.required]],
+        company: ['', [ Validators.required]],
+        location: ['', [ Validators.required]],
+        type: ['', [Validators.required]],
+        startDate: ['', [Validators.required]],
+        endDate: ['', [Validators.required]],
+        hidden: [''],
+      });
+
+  }
+
+  public submitJob() {
+    console.log(
+      this.jobForm.get('position')!.value,
+      this.jobForm.get('company')!.value,
+      this.jobForm.get('location')!.value,
+      this.jobForm.get('type')!.value,
+      this.jobForm.get('startDate')!.value,
+      this.jobForm.get('endDate')!.value,
+      this.jobForm.get('hidden')!.value
+      );
+
+      let job = new Job(0, this.jobForm.get('position')!.value, this.jobForm.get('company')!.value,
+      this.jobForm.get('location')!.value, this.jobForm.get('type')!.value - 1, this.jobForm.get('startDate')!.value,
+      this.jobForm.get('endDate')!.value, this.jobForm.get('hidden')!.value);
+
+      this.jobService.addJobToEmployee(job, this.employee.id).subscribe();
+
+      console.log(JSON.stringify(job));
+
+      window.location.reload();
+
+  }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe(

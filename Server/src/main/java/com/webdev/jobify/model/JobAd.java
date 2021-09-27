@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -24,19 +25,18 @@ public class JobAd implements Serializable { // Job Advertisement
 
     private String location;
 
-    @Enumerated(EnumType.STRING)
-    private TypeOfEmployment type;
+    private int type;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @ManyToOne
     private Employee creator;
 
     @OneToMany
-    private List<Employee> applicants;
+    private List<Employee> applicants = new LinkedList<>();
 
-    public JobAd(Long id, String position, String company, String location, TypeOfEmployment type,
+    public JobAd(Long id, String position, String company, String location, int type,
                  Date startDate, Employee creator, List<Employee> applicants) {
         this.id = id;
         this.position = position;
@@ -83,11 +83,11 @@ public class JobAd implements Serializable { // Job Advertisement
         this.location = location;
     }
 
-    public TypeOfEmployment getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(TypeOfEmployment type) {
+    public void setType(int type) {
         this.type = type;
     }
 

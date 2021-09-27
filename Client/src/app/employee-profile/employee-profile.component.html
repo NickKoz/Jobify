@@ -25,7 +25,7 @@
 
     <!-- Experience panel -->
     <div class="panel">
-        <div class="panel-heading">
+          <div class="panel-heading">
             <span class="panel-icon">
                 <i class="fa fa-star"></i>
             </span>
@@ -35,35 +35,76 @@
                 <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
 
-            <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">
-                            &times;
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Some text in the modal.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                Close
-                            </button>
-                        </div>
-                    </div>
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header" style="text-align: center;font-weight: bold;">
+                    Add job
+                    <button type="button" class="close" data-dismiss="modal">
+                      &times;
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="jobForm" (ngSubmit)="submitJob()" style="text-align: center;">
+                      <input
+                        type="text"
+                        placeholder="Position"
+                        formControlName="position"
+                      />
+                      <br />
+                      <input
+                        type="text"
+                        placeholder="Company"
+                        formControlName="company"
+                      />
+                      <br />
+                      <input
+                        type="text"
+                        placeholder="Location"
+                        formControlName="location"
+                      />
+                      <br />
+                      <select class="form-select" aria-label="Default select example" formControlName="type">
+                        <option [ngValue]="null" [disabled]="true">Select type of employement</option>
+                        <option value="1">Full time</option>
+                        <option value="2">Part time</option>
+                        <option value="3">Internship</option>
+                        <option value="4">Volunteer</option>
+                      </select>
+                      <br />
+                      <label>
+                        Start date:
+                        <input type="date" formControlName="startDate" />
+                      </label>
+                      <br>
+                      <label>
+                        &nbsp;&nbsp;End date:
+                        <input type="date" formControlName="endDate" />
+                      </label>
+                      <br />
+                      <div style="margin-left: 20px">
+                        <input type="checkbox" formControlName="hidden" /> Hidden
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" [disabled]="jobForm.invalid">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                          Close
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
 
         <div class="panel-body pb5">
 
             <ul *ngFor="let job of employee?.jobs">
                 <li *ngIf="!job.hidden || visible">
                   <h4>{{job.position}}</h4>
-                    <span class="text-muted">&nbsp;,&nbsp;{{type[job.type]}}</span>
+                    <span class="text-muted">&nbsp;,&nbsp;{{job.typeString}}</span>
                   <p class="text-muted"> {{job.location}}
                     <br> {{job.company}},&nbsp; {{job.startDate}} {{job.endDate}}
                   </p>

@@ -10,6 +10,7 @@ import { JobService } from '../_services/job.service';
 import { DatePipe } from '@angular/common';
 import { ConnectionService } from '../_services/connection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CertificateService } from '../_services/certificate.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -19,6 +20,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class EmployeeProfileComponent implements OnInit {
 
   jobForm: FormGroup;
+  certificateForm: FormGroup;
+  skillForm: FormGroup;
   employeeID: number;
   employee: Employee;
   private sub: Subscription;
@@ -31,7 +34,7 @@ export class EmployeeProfileComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, 
     private employeeService: EmployeeService, private jobService: JobService,
     private datePipe: DatePipe, private connectionService: ConnectionService, 
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder, private certificateService: CertificateService) {
 
       this.jobForm = this.formBuilder.group({
         position: ['', [ Validators.required]],
@@ -41,6 +44,20 @@ export class EmployeeProfileComponent implements OnInit {
         startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
         hidden: [''],
+      });
+
+      this.certificateForm = this.formBuilder.group({
+        school: ['', [ Validators.required]],
+        degree: ['', [ Validators.required]],
+        field: ['', [ Validators.required]],
+        grade: [''],
+        startDate: ['', [Validators.required]],
+        endDate: ['', [Validators.required]],
+        hidden: [''],
+      });
+
+      this.skillForm = this.formBuilder.group({
+        skill: ['', [ Validators.required]],
       });
 
   }
@@ -67,6 +84,36 @@ export class EmployeeProfileComponent implements OnInit {
       window.location.reload();
 
   }
+
+
+  public submitCertificate() {
+    console.log(
+      this.certificateForm.get('school')!.value,
+      this.certificateForm.get('degree')!.value,
+      this.certificateForm.get('field')!.value,
+      this.certificateForm.get('grade')!.value,
+      this.certificateForm.get('startDate')!.value,
+      this.certificateForm.get('endDate')!.value,
+      this.certificateForm.get('hidden')!.value
+      );
+    
+    let certificate = new Certificate(0, this.certificateForm.get('school')!.value, this.certificateForm.get('degree')!.value,
+    this.certificateForm.get('field')!.value, this.certificateForm.get('startDate')!.value, this.certificateForm.get('endDate')!.value,
+    this.certificateForm.get('grade')!.value, this.certificateForm.get('hidden')!.value);
+
+    this.certificateService.addCertificateToEmployee(certificate, this.employee.id).subscribe();
+
+    window.location.reload();
+  }
+
+
+  public submitSkill() {
+    this.employeeService.addSkillToEmployee(this.employee.id, this.skillForm.get('skill')!.value).subscribe();
+    window.location.reload();
+  }
+
+
+
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe(
@@ -139,6 +186,8 @@ export class EmployeeProfileComponent implements OnInit {
             for(let cert of certificateList) {
               this.employee.certificates.push(new Certificate(cert.id, cert.school, cert.degree,
                 cert.field, cert.startDate, cert.endDate, cert.grade, cert.hidden));
+              
+              this.employee.certificates[this.employee.certificates.length - 1].beautify();
             }
             console.log(this.employee.certificates);
 
@@ -174,26 +223,27 @@ export class EmployeeProfileComponent implements OnInit {
           }
         );
         
-        this.connectionService.getConnection(this.employeeID, this.employee.id).subscribe(
-          (resp: any) => {
-            this.requestSent = true;
-            this.pendingRequest = resp.pending;
-            
-            if(!this.pendingRequest) {
-              this.followMessage = 'Following';
+        if(this.employee.id !== this.employeeID){
+          this.connectionService.getConnection(this.employeeID, this.employee.id).subscribe(
+            (resp: any) => {
+              this.requestSent = true;
+              this.pendingRequest = resp.pending;
+              
+              if(!this.pendingRequest) {
+                this.followMessage = 'Following';
+              }
+              else {
+                this.followMessage = 'Sent';
+              }
+              
+            },
+            (err) => {
+              this.requestSent = false;
+              this.pendingRequest = false;
+              this.followMessage = 'Follow';
             }
-            else {
-              this.followMessage = 'Sent';
-            }
-            
-          },
-          (err) => {
-            this.requestSent = false;
-            this.pendingRequest = false;
-            this.followMessage = 'Follow';
-          }
           );
-          
+        }
     });
   }
 

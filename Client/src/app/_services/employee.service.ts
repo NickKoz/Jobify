@@ -77,6 +77,15 @@ export class EmployeeService {
   }
 
 
+  public addSkillToEmployee(id: number, skill: string) {
+    let data = new HttpParams()
+      .append('id', id)
+      .append('skill', skill);
+    
+    return this.http.post(this.employeeURL + '/addskill', data);
+  }
+
+
   public getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.employeeURL + '/all');
   }

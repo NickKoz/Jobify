@@ -31,11 +31,11 @@
             </span>
             <span class="panel-title"> Experience</span>
             <!-- Trigger the modal with a button -->
-            <button type="button" class="btn" data-toggle="modal" data-target="#myModal" *ngIf="visible">
+            <button type="button" class="btn" data-toggle="modal" data-target="#experienceModal" *ngIf="visible">
                 <span class="glyphicon glyphicon-plus-sign"></span>
             </button>
 
-            <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal fade" id="experienceModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -87,7 +87,7 @@
                         <input type="checkbox" formControlName="hidden" /> Hidden
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" [disabled]="jobForm.invalid">Submit</button>
+                        <button type="submit" class="btn btn-default" [disabled]="jobForm.invalid">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                           Close
                         </button>
@@ -117,19 +117,87 @@
 
     <div class="panel">
         <div class="panel-heading">
-            <span class="panel-icon">
-                <i class="fa fa-pencil"></i>
-            </span>
-            <span class="panel-title">Education</span>
+          <span class="panel-icon">
+              <i class="fa fa-pencil"></i>
+          </span>
+          <span class="panel-title">Education</span>
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn" data-toggle="modal" data-target="#educationModal" *ngIf="visible">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+
+          <div class="modal fade" id="educationModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="text-align: center;font-weight: bold;">
+                  Add education
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="certificateForm" (ngSubmit)="submitCertificate()" style="text-align: center;">
+                    <input
+                      type="text"
+                      placeholder="School"
+                      formControlName="school"
+                    />
+                    <br />
+                    <input
+                      type="text"
+                      placeholder="Degree"
+                      formControlName="degree"
+                    />
+                    <br />
+                    <input
+                      type="text"
+                      placeholder="Field"
+                      formControlName="field"
+                    />
+                    <br />
+                    <input
+                      type="number"
+                      placeholder="Grade"
+                      formControlName="grade"
+                    />
+                    <br />
+                    <label>
+                      Start date:
+                      <input type="date" formControlName="startDate" />
+                    </label>
+                    <br>
+                    <label>
+                      &nbsp;&nbsp;End date:
+                      <input type="date" formControlName="endDate" />
+                    </label>
+                    <br />
+                    <div style="margin-left: 20px">
+                      <input type="checkbox" formControlName="hidden" /> Hidden
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-default" [disabled]="certificateForm.invalid">Save</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="panel-body pb5">
 
             <ul *ngFor="let cert of employee?.certificates">
                 <li *ngIf="!cert.hidden || visible">
-                    <h4>{{cert.degree}}</h4>
-                    <span class="text-muted"></span>
-                    <p class="text-muted"> {{cert.school}}, &nbsp; {{cert.field}}
-                        <br> {{cert.grade}}, &nbsp; {{cert.startDate}} {{cert.endDate}}
+                    <h4>{{cert.school}}</h4>
+                    <p class="text-muted"> 
+                      {{cert.degree}}, &nbsp; {{cert.field}}
+                        <br>{{cert.startDate}} {{cert.endDate}}
+                    </p>
+                    <p class="text-muted" *ngIf="cert.grade">
+                      Grade: {{cert.grade}}
                     </p>
                     <hr class="short br-lighter">
                 </li>
@@ -140,15 +208,48 @@
 
     <div class="panel">
         <div class="panel-heading">
-            <span class="panel-icon">
-                <i class="fa fa-trophy"></i>
-            </span>
-            <span class="panel-title"> My Skills</span>
+          <span class="panel-icon">
+              <i class="fa fa-trophy"></i>
+          </span>
+          <span class="panel-title"> Skills</span>
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn" data-toggle="modal" data-target="#skillsModal" *ngIf="visible">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+          <div class="modal fade" id="skillsModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header" style="text-align: center;font-weight: bold;">
+                  Add skill
+                  <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="skillForm" (ngSubmit)="submitSkill()" style="text-align: center;">
+                    <input
+                      type="text"
+                      placeholder="Skill"
+                      formControlName="skill"
+                    />
+                    <br />
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-default" [disabled]="skillForm.invalid">Save</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div class="panel-body pb5">
 
-            <ul *ngFor="let skill of employee?.skills; let i = index">
+            <ul *ngFor="let skill of employee?.skills">
                 <li>
                     <span class="label label-primary mr5 mb10 ib lh15">{{skill}}</span>
                 </li>

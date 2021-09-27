@@ -22,19 +22,22 @@ export class Certificate {
         this.grade = grade;
         this.hidden = hidden;
         
-        if(startDate != null) {
-            let month = startDate.split('-')[1];
-            let year = startDate.split('-')[2];
-            this.startDate = ' ' + globals.findMonth(month) + ' ' + year;
-          }
-          
-          if(endDate != null) {
-            let month = endDate.split('-')[1];
-            let year = endDate.split('-')[2];
-            this.endDate = ' - ' + globals.findMonth(month) + ' ' + year;
-          }
-    
-    }
+      }
 
+      public beautify() {
+        if(this.startDate != null) {
+            let month = this.startDate.split('-')[1];
+            let year = this.startDate.split('-')[0];
+            this.startDate = ' ' + globals.findMonth(month) + ' ' + year;
+        }
+          
+        if(this.endDate != null) {
+          let month = this.endDate.split('-')[1];
+          let year = this.endDate.split('-')[0];
+          this.endDate = ' - ' + globals.findMonth(month) + ' ' + year;
+        }
+
+      }
+      
 
 }

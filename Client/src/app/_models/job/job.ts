@@ -41,13 +41,13 @@ export class Job {
       
       if(this.startDate != null) {
         let month = this.startDate.split('-')[1];
-        let year = this.startDate.split('-')[2];
+        let year = this.startDate.split('-')[0];
         this.startDate = ' ' + globals.findMonth(month) + ' ' + year;
       }
       
       if(this.endDate != null) {
         let month = this.endDate.split('-')[1];
-        let year = this.endDate.split('-')[2];
+        let year = this.endDate.split('-')[0];
         this.endDate = ' - ' + globals.findMonth(month) + ' ' + year;
       }
     }

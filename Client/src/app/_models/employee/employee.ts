@@ -1,5 +1,6 @@
 import { Certificate } from '../certificate/certificate';
 import { Job } from '../job/job';
+import { Post } from '../post/post';
 
 
 export class Employee {
@@ -16,6 +17,7 @@ export class Employee {
     certificates: Certificate[] = [];
     skills: String[] = [];
     connections: Employee[] = [];
+    posts: Post[] = [];
 
 
     constructor(id: number, name: string, surname: string, email: string, password: string, 

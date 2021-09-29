@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 
-<div class="requests" >
+<div class="wrapper" >
     <h3>
         Connection Requests
     </h3>
@@ -9,7 +9,7 @@
     <div class="container">
         <ul *ngFor="let emp of pendingConnections">
             <li>
-                <a class="employeeList__profile" routerLink="/profile/{{emp.id}}">
+                <a routerLink="/profile/{{emp.id}}">
                     <span class="employeeList__name">
                         {{ emp.name }} {{ emp.surname }}
                     </span>
@@ -20,6 +20,43 @@
         </ul>
     </div>
     
+</div>
+
+
+<div class="wrapper">
+
+    <h3>
+        Notifications
+    </h3>
+
+    <div class="container">
+        <ul *ngFor="let post of employee.posts">
+            <ul *ngFor="let comm of post.comments">
+                <li>
+                    <a routerLink="/profile/{{comm.creator.id}}">
+                        <span class="employeeList__name">
+                            {{comm.creator.name}} {{comm.creator.surname}}
+                        </span>
+                    </a>
+                    commented on your post:&nbsp; {{comm.text}}
+                </li>
+            </ul>
+            <ul *ngFor="let emp of post.likes">
+                <li>
+                    <a routerLink="/profile/{{emp.id}}">
+                        <span class="employeeList__name">
+                            {{ emp.name }} {{ emp.surname }}
+                        </span>
+                    </a>
+                    liked your post
+                </li>
+            </ul>
+        </ul>
+
+    </div>
+
+
+
 </div>
 
 

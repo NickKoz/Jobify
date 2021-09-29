@@ -9,7 +9,7 @@ export class Post {
     creator: Employee;
     photo: any;
     comments: Comment[];
-    employeeLikes: Employee[];
+    likes: Employee[];
     liked: boolean;
 
     constructor(id: number, description: string, date: string, creator: Employee) {

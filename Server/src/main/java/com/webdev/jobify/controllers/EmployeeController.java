@@ -46,6 +46,7 @@ public class EmployeeController {
     private final JobAdService jobAdService;
     private final JobAdModelAssembler jobAdAssembler;
     private final PostService postService;
+    private final PostModelAssembler postAssembler;
 
 
     public EmployeeController(EmployeeService employeeService, EmployeeModelAssembler assembler,
@@ -53,7 +54,7 @@ public class EmployeeController {
                               ConnectionService connectionService, ConnectionModelAssembler connectionAssembler,
                               CertificateService certificateService, CertificateModelAssembler certificateAssembler,
                               MessageService messageService, MessageModelAssembler messageAssembler,
-                              JobAdService jobAdService, JobAdModelAssembler jobAdAssembler, PostService postService) {
+                              JobAdService jobAdService, JobAdModelAssembler jobAdAssembler, PostService postService, PostModelAssembler postAssembler) {
         this.employeeService = employeeService;
         this.employeeAssembler = assembler;
         this.jobAssembler = jobAssembler;
@@ -67,6 +68,7 @@ public class EmployeeController {
         this.jobAdService = jobAdService;
         this.jobAdAssembler = jobAdAssembler;
         this.postService = postService;
+        this.postAssembler = postAssembler;
     }
 
     @GetMapping("/all")
@@ -194,8 +196,13 @@ public class EmployeeController {
         return CollectionModel.of(messages, linkTo(methodOn(MessageController.class).getAllMessages()).withSelfRel());
     }
 
-//    @GetMapping("/{ids}/posts")
+    @GetMapping("/{id}/posts")
+    public CollectionModel<EntityModel<Post>> getEmployeePosts(@PathVariable Long id) {
+        List<EntityModel<Post>> posts = postService.findPostsByCreatorId(id).stream().map(postAssembler::toModel)
+                .collect(Collectors.toList());
 
+        return CollectionModel.of(posts, linkTo(methodOn(PostController.class).getAllPosts()).withSelfRel());
+    }
 
 
 

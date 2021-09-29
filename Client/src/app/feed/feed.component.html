@@ -134,7 +134,7 @@
             <button mat-flat-button style="margin-right: 10px;" (click)="handleLike(post.id)"
             [ngClass]="{ liked : post.liked}">
               <i class="fa fa-gittip" style="margin-bottom: 4px;margin-right: 4px;"></i>
-              Like &nbsp; {{post.employeeLikes?.length}}
+              Like &nbsp; {{post.likes?.length}}
             </button>
             <button mat-flat-button  data-toggle="modal" data-target="#newCommentModal">
               <i class="fa fa-comment" style="margin-bottom: 4px;margin-right: 4px;"></i> 

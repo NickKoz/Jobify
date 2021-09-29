@@ -125,4 +125,8 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + '/' + String(id) + '/messages');
   }
 
+  public getEmployeePosts(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/posts');
+  }
+
 }

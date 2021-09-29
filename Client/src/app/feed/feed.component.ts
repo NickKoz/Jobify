@@ -125,9 +125,9 @@ export class FeedComponent implements OnInit {
                 return;
               }
 
-              post.employeeLikes = likes._embedded.employeeList;
+              post.likes = likes._embedded.employeeList;
 
-              if(post.employeeLikes.some( emp => emp['id'] === this.employee['id'] )) {
+              if(post.likes.some( emp => emp['id'] === this.employee['id'] )) {
                 post.liked = true;
               }
               else {

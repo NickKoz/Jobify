@@ -35,6 +35,17 @@ export class NotificationsComponent implements OnInit {
       }
     );
 
+    this.employeeService.getEmployeePosts(this.employee.id).subscribe(
+      (resp: any) => {
+        if(resp._embedded == null) {
+          return;
+        }
+        
+        this.employee.posts = resp._embedded.postList;
+      }
+    );
+
+
   }
 
   public handleRequest(accept: boolean, requester: number) {

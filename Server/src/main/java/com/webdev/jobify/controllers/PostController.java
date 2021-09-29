@@ -2,9 +2,11 @@ package com.webdev.jobify.controllers;
 
 
 import com.webdev.jobify._aux.Comment;
+import com.webdev.jobify.assemblers.EmployeeModelAssembler;
 import com.webdev.jobify.assemblers.PostModelAssembler;
 import com.webdev.jobify.model.Employee;
 import com.webdev.jobify.model.Post;
+import com.webdev.jobify.services.CommentService;
 import com.webdev.jobify.services.EmployeeService;
 import com.webdev.jobify.services.PostService;
 import org.springframework.hateoas.CollectionModel;
@@ -13,10 +15,11 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -31,11 +34,15 @@ public class PostController {
     private final PostService postService;
     private final PostModelAssembler assembler;
     private final EmployeeService employeeService;
+    private final EmployeeModelAssembler employeeAssembler;
+    private final CommentService commentService;
 
-    public PostController(PostService postService, PostModelAssembler assembler, EmployeeService employeeService) {
+    public PostController(PostService postService, PostModelAssembler assembler, EmployeeService employeeService, EmployeeModelAssembler employeeAssembler, CommentService commentService) {
         this.postService = postService;
         this.assembler = assembler;
         this.employeeService = employeeService;
+        this.employeeAssembler = employeeAssembler;
+        this.commentService = commentService;
     }
 
     @GetMapping("/{id}")
@@ -43,6 +50,22 @@ public class PostController {
         Post post = postService.findPostById(id);
         return assembler.toModel(post);
     }
+
+    @GetMapping("/{id}/comments")
+    public List<Comment> getCommentsOfPost(@PathVariable("id") Long id) {
+        Post post = postService.findPostById(id);
+        return post.getComments();
+    }
+
+    @GetMapping("/{id}/likes")
+    public CollectionModel<EntityModel<Employee>> getLikesOfPost(@PathVariable("id") Long id) {
+        Post post = postService.findPostById(id);
+        List<EntityModel<Employee>> likes = post.getLikes().stream().map(employeeAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(likes, linkTo(methodOn(EmployeeController.class).getAllEmployees()).withSelfRel());
+    }
+
 
     @GetMapping("/all")
     public CollectionModel<EntityModel<Post>> getAllPosts() {
@@ -52,7 +75,11 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addPostToEmployee(@RequestBody Post newPost, @RequestParam("id")Long employee_id) {
+    public ResponseEntity<?> addPostToEmployee(@RequestPart(value = "post") Post newPost,
+                                               @RequestPart(value = "file", required = false) MultipartFile file,
+                                               @RequestParam("id")Long employee_id) throws IOException {
+
+        newPost.storeFile(file);
 
         EntityModel<Post> entityModel;
 
@@ -80,11 +107,12 @@ public class PostController {
 
             Employee employee = employeeService.findEmployeeById(employee_id);
 
-            LinkedList<Employee> employeeLikes = new LinkedList<>(post.getEmployeeLikes());
+            // Adding employee's like to post.
+            LinkedList<Employee> employeeLikes = new LinkedList<>(post.getLikes());
 
             employeeLikes.push(employee);
 
-            post.setEmployeeLikes(employeeLikes);
+            post.setLikes(employeeLikes);
 
             postService.savePost(post);
         }
@@ -96,10 +124,15 @@ public class PostController {
     }
 
     @PostMapping("/comment")
+    @ResponseBody
     public ResponseEntity<?> addCommentToPost(@RequestParam("post_id") Long post_id, @RequestBody Comment comment) {
+
+        System.out.println(comment.toString());
 
         try {
             Post post = postService.findPostById(post_id);
+
+            comment = commentService.saveComment(comment);
 
             LinkedList<Comment> postComments = new LinkedList<>(post.getComments());
 

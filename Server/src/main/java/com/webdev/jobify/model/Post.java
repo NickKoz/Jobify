@@ -2,12 +2,19 @@ package com.webdev.jobify.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webdev.jobify._aux.Comment;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Post implements Serializable {
@@ -21,24 +28,24 @@ public class Post implements Serializable {
 
     private String file;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @ManyToOne
     private Employee creator;
 
     @OneToMany
-    private List<Comment> comments = new LinkedList<Comment>();
+    private List<Comment> comments = new LinkedList<>();
 
     @OneToMany
-    private List<Employee> employeeLikes = new LinkedList<Employee>();
+    private List<Employee> likes = new LinkedList<>();
 
-    public Post(Long id, String description, String file, Employee creator, List<Employee> employeeLikes) {
+    public Post(Long id, String description, String file, Employee creator, List<Employee> likes) {
         this.id = id;
         this.description = description;
         this.file = file;
         this.creator = creator;
-        this.employeeLikes = employeeLikes;
+        this.likes = likes;
     }
 
     public Post() {}
@@ -92,11 +99,58 @@ public class Post implements Serializable {
         this.comments = comments;
     }
 
-    public List<Employee> getEmployeeLikes() {
-        return employeeLikes;
+    public List<Employee> getLikes() {
+        return likes;
     }
 
-    public void setEmployeeLikes(List<Employee> employeeLikes) {
-        this.employeeLikes = employeeLikes;
+    public void setLikes(List<Employee> likes) {
+        this.likes = likes;
     }
+
+    public void storeFile(MultipartFile file) throws IOException {
+
+        if(file == null) {
+            this.setFile(null);
+            return;
+        }
+
+        if(!file.isEmpty()) {
+            byte[] bytes = file.getBytes();
+
+            Path currRelativePath = Paths.get("");
+
+            String uploadPath = currRelativePath.toAbsolutePath().toString() + File.separator + "src" + File.separator +
+                    "main" + File.separator + "resources" + File.separator + "uploaded" + File.separator + "post" + File.separator +
+                    "files" + File.separator;
+
+            File uploadDir = new File(uploadPath);
+            if(!uploadDir.exists()){
+                uploadDir.mkdirs();
+            }
+
+            // Generate a new random name for post file.
+            String newRandomFileName = UUID.randomUUID().toString();
+
+            // Get its extension.
+            String fileName = file.getOriginalFilename();
+            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+            String filePath = uploadPath + newRandomFileName + "." + fileExtension;
+            Path destPath = Paths.get(filePath);
+
+            // Save it to uploaded folder.
+            Files.write(destPath, bytes);
+
+            // Update employee's data.
+            this.setFile(filePath);
+        }
+
+
+    }
+
+
+
+
+
+
 }

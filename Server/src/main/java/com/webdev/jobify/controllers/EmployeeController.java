@@ -185,13 +185,10 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/{ids}/messages")
-    public CollectionModel<EntityModel<Message>> getEmployee1MessagesWithEmployee2(@PathVariable Long[] ids) {
+    @GetMapping("/{id}/messages")
+    public CollectionModel<EntityModel<Message>> getMessagesOfEmployee1WithEmployee2(@PathVariable Long id) {
 
-        Long id1 = ids[0];
-        Long id2 = ids[1];
-
-        List<EntityModel<Message>> messages = messageService.findMessagesOfEmployee1WithEmployee2(id1, id2).stream().map(messageAssembler::toModel)
+        List<EntityModel<Message>> messages = messageService.findMessagesOfEmployee(id).stream().map(messageAssembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(messages, linkTo(methodOn(MessageController.class).getAllMessages()).withSelfRel());

@@ -121,5 +121,8 @@ export class EmployeeService {
     return this.http.get(this.employeeURL + '/' + String(id) + '/connections/pending');
   }
 
+  public getEmployeeMessages(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/messages');
+  }
 
 }

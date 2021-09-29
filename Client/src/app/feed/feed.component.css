@@ -1,7 +1,32 @@
 
 
+.liked {
+  background-color: #0a66c2;
+}
 
-.sidebar {
+
+.comment__List {
+  height: 80px;
+  overflow-x: auto;
+}
+
+.comment__List > ul {
+  list-style-type: none;
+}
+
+.profile-picture-icon {
+  max-width: 100%;
+  height: auto;
+  left: 0px;
+  right: 0px;
+  border-radius: 50%;
+  display: block;
+  width: 35px;
+  height: 35px;
+}
+
+  
+  .sidebar {
     position: sticky;
     top: 80px;
     flex: 0.2;
@@ -49,7 +74,7 @@
     font-size: 18px;
     cursor: pointer;
   }
-
+  
   .sidebar_top > h3 {
     cursor: pointer;
   }
@@ -58,3 +83,50 @@
     margin-right: 10px;
     margin-left: 10px;
   }
+
+  body {
+    background-color: #eeeeee;
+  }
+  
+  .h7 {
+    font-size: 0.8rem;
+  }
+  
+  .gedf-wrapper {
+    margin-top: 0.97rem;
+  }
+  
+  @media (min-width: 992px) {
+    .gedf-main {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+    .gedf-card {
+      margin-bottom: 2.77rem;
+    }
+  }
+  
+  /**Reset Bootstrap*/
+  .dropdown-toggle::after {
+    content: none;
+    display: none;
+  }
+  
+  .button {
+    float: left;
+    /* width: 50px;
+    height: 30px;
+    font-size: x-large;
+    color: white;
+    background-color: #0a66c2;
+    border-radius: 50px;
+    border: 0.5px solid; */
+    outline: none !important;
+  }
+  
+  /* .btn {
+    position: relative;
+    float: right;
+    margin-top: 10px;
+  } */
+  

@@ -30,7 +30,7 @@ public class MessageService {
         return messageRepo.save(message);
     }
 
-    public List<Message> findMessagesOfEmployee1WithEmployee2(Long id1, Long id2) {
-        return messageRepo.findMessagesOfEmployee1WithEmployee2(id1, id2);
+    public List<Message> findMessagesOfEmployee(Long id) {
+        return messageRepo.findMessagesOfEmployee(id);
     }
 }

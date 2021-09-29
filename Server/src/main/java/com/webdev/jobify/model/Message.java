@@ -21,7 +21,7 @@ public class Message implements Serializable {
     @ManyToOne
     private Employee receiver;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp timeSent;
 
     @Column(nullable = false)

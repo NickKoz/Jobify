@@ -23,6 +23,7 @@ import { DatePipe } from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import { JobsComponent } from './jobs/jobs.component';
 import { JobsDetailsComponent } from './jobs/jobs-details/jobs-details.component';
+import { MessagingComponent } from './messaging/messaging.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { JobsDetailsComponent } from './jobs/jobs-details/jobs-details.component
     NotificationsComponent,
     JobsComponent,
     JobsDetailsComponent,
+    MessagingComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,11 @@ import { JobsDetailsComponent } from './jobs/jobs-details/jobs-details.component
             component: JobsDetailsComponent
           }
         ],
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'messaging',
+        component: MessagingComponent,
         canActivate: [AuthGuard]
       },
       {

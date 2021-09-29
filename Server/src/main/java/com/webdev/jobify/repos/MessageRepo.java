@@ -14,8 +14,7 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 //    @Query(value = "select * from message m where m.sender_id = :id")
 //    List<Message> findMessagesOfEmployee(@Param("id") Long id);
 
-    @Query(value = "select * from message m where (m.sender_id = :id1 and m.receiver_id = :id2) or "
-    + "((m.sender_id = :id2 and m.receiver_id = :id1))", nativeQuery = true)
-    List<Message> findMessagesOfEmployee1WithEmployee2(@Param("id1") Long id1, @Param("id2") Long id2);
+    @Query(value = "select * from message m where m.sender_id = :id or m.receiver_id = :id",nativeQuery = true)
+    List<Message> findMessagesOfEmployee(@Param("id") Long id);
 
 }

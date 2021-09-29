@@ -1,3 +1,4 @@
+import { Comment } from "../comment/comment";
 import { Employee } from "../employee/employee";
 
 export class Post {
@@ -6,8 +7,10 @@ export class Post {
     description: string;
     date: string;
     creator: Employee;
+    photo: any;
     comments: Comment[];
     employeeLikes: Employee[];
+    liked: boolean;
 
     constructor(id: number, description: string, date: string, creator: Employee) {
         this.id = id;

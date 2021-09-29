@@ -8,7 +8,41 @@
 
 <app-header></app-header>
 
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
+<link
+  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+  crossorigin="anonymous"
+/>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+  integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  crossorigin="anonymous"
+></script>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+/>
 
 <div class="sidebar">
   <div class="sidebar_top">
@@ -17,5 +51,144 @@
     <h4>{{employee?.jobTitle}}</h4>
     <h3><a>Grow your network</a></h3>
   </div>
+</div>
 
+<div class="container-fluid gedf-wrapper">
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="card gedf-card">
+        <button
+          type="button"
+          class="btn" data-toggle="modal" data-target="#newPostModal">
+          Create New Post
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="newPostModal" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+              </div>
+              <div class="modal-body">
+                <form [formGroup]="postForm" (ngSubmit)="submitPost()">
+                  <textarea
+                    rows="4"
+                    cols="65"
+                    placeholder="What are you thinking?"
+                    style="border: 0px"
+                    formControlName="text"
+                  ></textarea>
+
+                  <div class="modal-footer">
+                    <button
+                      type="submit"
+                      class="btn btn-default" 
+                      style="margin-right: 230px" onclick="document.getElementById('getFile').click()">
+                      Upload
+                    </button>
+                    <input type="file" (change)="processFile($event)" id="getFile" style="display:none">
+                    <button type="submit" [disabled]="postForm.invalid" class="btn btn-default">Post</button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--- \\\\\\\Post-->
+      <ul
+        style="list-style-type: none;margin-left: -40px" *ngFor="let post of postList">
+        <li class="card gedf-card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="mr-2">
+                  <img class="profile-picture-icon" width="45" [src]="post.creator?.photo" alt=""/>
+                </div>
+                <div class="ml-2">
+                  <div class="h5 m-0">
+                    {{ post.creator.name }} {{ post.creator.surname }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              {{ post.description }}
+            </p>
+          </div>
+          <div class="card-footer">
+
+            <button mat-flat-button style="margin-right: 10px;" (click)="handleLike(post.id)"
+            [ngClass]="{ liked : post.liked}">
+              <i class="fa fa-gittip" style="margin-bottom: 4px;margin-right: 4px;"></i>
+              Like &nbsp; {{post.employeeLikes?.length}}
+            </button>
+            <button mat-flat-button  data-toggle="modal" data-target="#newCommentModal">
+              <i class="fa fa-comment" style="margin-bottom: 4px;margin-right: 4px;"></i> 
+              Comment
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="newCommentModal" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      &times;
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form [formGroup]="commentForm" (ngSubmit)="submitComment(post.id)">
+                      <textarea
+                        rows="4"
+                        cols="65"
+                        placeholder="Add a comment..."
+                        style="border: 0px"
+                        formControlName="text"
+                      ></textarea>
+
+                      <div class="modal-footer">
+                        <button type="submit" [disabled]="commentForm.invalid" class="btn btn-default">Post</button>
+                        <button
+                          type="button"
+                          class="btn btn-default"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comment__List">
+            <ul *ngFor="let comm of post.comments">
+              <li>
+                <a routerLink="/profile/{{comm.creator.id}}">
+                  {{comm.creator.name}} {{comm.creator.surname}} :
+                </a>
+                {{comm.text}}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
 </div>

@@ -131,7 +131,8 @@ export class EmployeeProfileComponent implements OnInit {
           this.visible = false;
         }
 
-        // let startD = this.datePipe.transform(new Date(1990, 2, 20), 'dd-MM-yyyy') as string;
+        // let startD = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') as string;
+        // console.log("NOW " + startD);
 
         // let job = new Job(null as any, 'Front End Developer', 'TestCompany', 'Athens', TypeOfEmployment.PART_TIME, startD, null as any, 
         // false);

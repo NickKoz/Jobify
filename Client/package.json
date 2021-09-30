@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/schematics": "^12.2.7",
     "@angular/animations": "^12.1.5",
     "@angular/cdk": "^12.2.7",
     "@angular/common": "~12.1.0",
@@ -20,6 +21,10 @@
     "@angular/platform-browser": "~12.1.0",
     "@angular/platform-browser-dynamic": "~12.1.0",
     "@angular/router": "~12.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
+    "@syncfusion/ej2": "^19.2.62",
+    "bootstrap": "^5.1.1",
+    "ngx-bootstrap": "^7.1.0",
     "npm-install-peers": "^1.2.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",

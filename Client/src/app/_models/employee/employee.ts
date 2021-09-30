@@ -1,5 +1,6 @@
 import { Certificate } from '../certificate/certificate';
 import { Job } from '../job/job';
+import { Message } from '../message/message';
 import { Post } from '../post/post';
 
 
@@ -18,6 +19,10 @@ export class Employee {
     skills: String[] = [];
     connections: Employee[] = [];
     posts: Post[] = [];
+    incomingMessages: Message[] = [];
+    outgoingMessages: Message[] = [];
+    chats: Employee[] = [];
+    messages: Message[] = [];
 
 
     constructor(id: number, name: string, surname: string, email: string, password: string, 

@@ -1,4 +1,18 @@
-<app-header></app-header>
-
-
-
+<div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+    <div class="users-container">
+        <ul class="users" *ngFor="let emp of employee.chats">
+            <a routerLink="/messaging/{{emp.id}}">
+                <li class="person" data-chat="person1">
+                    <div class="user">
+                        <img [src]="emp.photo" alt="Retail Admin">
+                        <span class="status busy"></span>
+                    </div>
+                    <p class="name-time">
+                        <span class="name">{{emp.name}} {{emp.surname}}</span>
+                        <!-- <span class="time">15/02/2019</span> -->
+                    </p>
+                </li>
+            </a>
+        </ul>
+    </div>
+</div>

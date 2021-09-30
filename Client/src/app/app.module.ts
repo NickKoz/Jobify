@@ -24,6 +24,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { JobsComponent } from './jobs/jobs.component';
 import { JobsDetailsComponent } from './jobs/jobs-details/jobs-details.component';
 import { MessagingComponent } from './messaging/messaging.component';
+import { MessageDetailsComponent } from './messaging/message-details/message-details.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MessagingComponent } from './messaging/messaging.component';
     JobsComponent,
     JobsDetailsComponent,
     MessagingComponent,
+    MessageDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +93,16 @@ import { MessagingComponent } from './messaging/messaging.component';
       },
       {
         path: 'messaging',
-        component: MessagingComponent,
+        children: [
+          {
+            path: '',
+            component: MessagingComponent
+          },
+          {
+            path: ':id',
+            component: MessageDetailsComponent
+          }
+        ],
         canActivate: [AuthGuard]
       },
       {

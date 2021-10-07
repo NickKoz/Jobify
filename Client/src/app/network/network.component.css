@@ -1,4 +1,17 @@
 
+.search_bar {
+  width: 15%;
+  place-items: center;
+  margin-left: 15%;
+}
+
+.mat-flat-button {
+  margin-left: 194px;
+  top: -35px;
+}
+
+
+
 .title {
   place-items: center;
   display: grid;

@@ -44,9 +44,12 @@ public class Employee implements Serializable{
     @Column(name = "skill")
     private List<String> skills = new LinkedList<String>();
 
+    private int jobAdViews = 0;
+
     public Employee() {}
 
-    public Employee(String name, String surname, String password, String email, String phone, String photo, List<String> skills){
+    public Employee(String name, String surname, String password, String email, String phone, String photo, List<String> skills
+                    , int jobAdViews){
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -55,6 +58,7 @@ public class Employee implements Serializable{
         this.phone = phone;
         this.photo = photo;
         this.skills = skills;
+        this.jobAdViews = jobAdViews;
     }
 
     public String getPassword() {
@@ -127,6 +131,14 @@ public class Employee implements Serializable{
 
     public void setSkills(List<String> skills) {
         this.skills = skills;
+    }
+
+    public int getJobAdViews() {
+        return jobAdViews;
+    }
+
+    public void setJobAdViews(int jobAdViews) {
+        this.jobAdViews = jobAdViews;
     }
 
     @Override

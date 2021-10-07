@@ -9,15 +9,20 @@ import com.webdev.jobify.model.Post;
 import com.webdev.jobify.services.CommentService;
 import com.webdev.jobify.services.EmployeeService;
 import com.webdev.jobify.services.PostService;
+import org.springframework.core.io.UrlResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +55,32 @@ public class PostController {
         Post post = postService.findPostById(id);
         return assembler.toModel(post);
     }
+
+    @GetMapping("/{id}/file")
+    public ResponseEntity<?> getFileOfPost(@PathVariable("id") Long id) throws IOException {
+        Post post = postService.findPostById(id);
+
+        String fileName = post.getFile();
+
+        Path filePath = Paths.get(fileName);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(new UrlResource(filePath.toUri()));
+
+    }
+
+    @GetMapping("/{id}/file/filename")
+    public ResponseEntity<?> getExtensionOfFileOfPost(@PathVariable("id") Long id) {
+        Post post = postService.findPostById(id);
+
+        String fileName = post.getFile();
+
+        return ResponseEntity.ok()
+                .body("{\"filename\":\"file." + fileName.substring(fileName.lastIndexOf(".") + 1) + "\"}");
+    }
+
 
     @GetMapping("/{id}/comments")
     public List<Comment> getCommentsOfPost(@PathVariable("id") Long id) {
@@ -127,7 +158,6 @@ public class PostController {
     @ResponseBody
     public ResponseEntity<?> addCommentToPost(@RequestParam("post_id") Long post_id, @RequestBody Comment comment) {
 
-        System.out.println(comment.toString());
 
         try {
             Post post = postService.findPostById(post_id);

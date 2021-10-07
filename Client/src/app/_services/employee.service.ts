@@ -85,11 +85,21 @@ export class EmployeeService {
     return this.http.post(this.employeeURL + '/addskill', data);
   }
 
+  public addJobAdViewToEmploye(id: number) {
+    let data = new HttpParams()
+      .append('id', id);
+    
+    return this.http.post(this.employeeURL + '/addjobadview', data);
+  }
+
 
   public getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.employeeURL + '/all');
   }
 
+  public getEmployeesBySearch(input: string) {
+    return this.http.get(this.employeeURL + '/search/' + input);
+  }
 
   public getEmployeePicture(id: number) {
     return this.http.get(this.employeeURL + '/' + String(id) + '/picture');
@@ -127,6 +137,22 @@ export class EmployeeService {
 
   public getEmployeePosts(id: number) {
     return this.http.get(this.employeeURL + '/' + String(id) + '/posts');
+  }
+
+  public getEmployeeFeedPosts(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/postsfeed');
+  }
+
+  public getEmployeeJobAds(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/jobads');
+  }
+
+  public getEmployeeLikes(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/likes');
+  }
+
+  public getEmployeeComments(id: number) {
+    return this.http.get(this.employeeURL + '/' + String(id) + '/comments');
   }
 
 }

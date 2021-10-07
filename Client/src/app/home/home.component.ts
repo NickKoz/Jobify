@@ -35,11 +35,9 @@ export class HomeComponent implements OnInit {
       let resp = this.adminService.loginAdmin(email, password);
       resp.subscribe(
         (adm) => {
-          console.log(JSON.stringify(adm));
           this.router.navigate(['admin']);
         },
         (err) => {
-          console.log(err.status);
           if(err.status == globals.EMAIL_NOT_FOUND) {
             this.emailNotFound = true;
           }
@@ -54,11 +52,9 @@ export class HomeComponent implements OnInit {
       let resp = this.employeeService.loginEmployee(email, password);
       resp.subscribe( 
         (emp) => {
-          console.log(JSON.stringify(emp));
           this.router.navigate(['feed']);
         }, 
         (err) => {
-          console.log(err.status);
           if(err.status == globals.EMAIL_NOT_FOUND) {
             this.emailNotFound = true;
           }

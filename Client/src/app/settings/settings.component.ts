@@ -51,12 +51,10 @@ export class SettingsComponent implements OnInit {
 
     this.employeeService.updateEmployee(this.employeeID, this.newEmail, this.newPassword).subscribe(
       (resp) => {
-        console.log(resp);
         this.emailAlreadyExists = false;
         this.successfulSave = true;
       },
       (err) => {
-        console.log(err.status);
         if(err.status === globals.CONFLICT) {
           this.emailAlreadyExists = true;
         }
@@ -64,7 +62,6 @@ export class SettingsComponent implements OnInit {
       }
     );
 
-    console.log(this.newEmail, this.newPassword);
 
     this.settingsForm.reset();
   

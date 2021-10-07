@@ -15,7 +15,7 @@ import * as globals from '../globals';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  employee: Employee = new Employee(0, "", "", "", "", "", "", "");
+  employee: Employee = new Employee(0, "", "", "", "", "", "");
   profilePicture: File;
   emailAlreadyExists: boolean = false;
 
@@ -48,11 +48,9 @@ export class RegisterComponent implements OnInit {
     // Subscribe response.
     resp.subscribe(
       (emp) => {
-        console.log(JSON.stringify(emp));
         this.router.navigate(['feed']);
       },
       (err) => {
-        console.log(err.status);
         if(err.status == globals.CONFLICT){
           this.emailAlreadyExists = true;
         }

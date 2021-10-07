@@ -48,7 +48,6 @@
   <div class="sidebar_top">
     <img [src]="employee?.photo" class="sidebar_avatar">
     <h2><a routerLink="/profile/{{employee?.id}}">{{employee?.name}} {{employee?.surname}}</a></h2>
-    <h4>{{employee?.jobTitle}}</h4>
     <h3><a>Grow your network</a></h3>
   </div>
 </div>
@@ -84,7 +83,7 @@
 
                   <div class="modal-footer">
                     <button
-                      type="submit"
+                      type="button"
                       class="btn btn-default" 
                       style="margin-right: 230px" onclick="document.getElementById('getFile').click()">
                       Upload
@@ -118,7 +117,9 @@
                 </div>
                 <div class="ml-2">
                   <div class="h5 m-0">
-                    {{ post.creator.name }} {{ post.creator.surname }}
+                    <a routerLink="/profile/{{post.creator.id}}">
+                      {{ post.creator.name }} {{ post.creator.surname }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -128,6 +129,7 @@
             <p class="card-text">
               {{ post.description }}
             </p>
+            <button mat-flat-button (click)="downloadFile(post.id)">File</button>
           </div>
           <div class="card-footer">
 

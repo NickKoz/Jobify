@@ -32,12 +32,7 @@ export class MessageDetailsComponent implements OnInit {
 
   public submitMessage() {
     this.messageService.addMessage(this.loggedInEmployee.id, this.chat.id, this.messageForm.get('text')!.value)
-    .subscribe(
-      (resp) => {
-
-        console.log(resp)
-      }
-    );
+    .subscribe();
 
     setTimeout(()=> console.log(""), 3000);
     window.location.reload();
@@ -56,7 +51,7 @@ export class MessageDetailsComponent implements OnInit {
         this.employeeService.getEmployee(chatID).subscribe(
           (emp: any) => {
             this.chat = new Employee(emp.id, emp.name, emp.surname, emp.email,
-              emp.password, emp.jobTitle, emp.phone, emp.imageUrl);
+              emp.password, emp.phone, emp.imageUrl);
 
             this.employeeService.getEmployeePicture(this.chat.id).subscribe(
               (res: any) => {
@@ -110,8 +105,6 @@ export class MessageDetailsComponent implements OnInit {
                 return 0;
               }
             );
-
-            console.log(this.chat.messages)
             
           }
         );

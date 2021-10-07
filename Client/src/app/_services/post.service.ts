@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Comment } from '../_models/comment/comment';
@@ -12,7 +12,6 @@ export class PostService {
   private postURL: string = 'https://localhost:8080/post';
 
   constructor(private http: HttpClient, private router: Router) { }
-
 
   public addPost(post: Post, employee_id: number, file: File) {
     let param = new HttpParams()
@@ -65,6 +64,16 @@ export class PostService {
 
   public getPostLikes(post_id: number) {
     return this.http.get(this.postURL + '/' + String(post_id) + '/likes');
+  }
+  
+  public getPostFile(post_id: number) {
+    return this.http.get(this.postURL + '/' + String(post_id) + '/file', {
+      responseType: 'blob'
+    });
+  }
+
+  public getPostFileName(post_id: number) {
+    return this.http.get(this.postURL + '/' + String(post_id) + '/file/filename');
   }
 
 }

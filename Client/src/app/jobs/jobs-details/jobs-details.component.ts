@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Employee } from 'src/app/_models/employee/employee';
 import { JobAd } from 'src/app/_models/jobAd/job-ad';
+import { EmployeeService } from 'src/app/_services/employee.service';
 import { JobAdService } from 'src/app/_services/job-ad.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class JobsDetailsComponent implements OnInit {
   applicants: Employee[];
   alreadyApplied: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private jobAdService: JobAdService) { }
+  constructor(private activatedRoute: ActivatedRoute, private jobAdService: JobAdService,
+    private employeeService: EmployeeService) { }
 
   public onApply() {
     this.jobAdService.addApplicant(this.jobAd.id, this.loggedInEmployee.id).subscribe();
@@ -47,6 +49,8 @@ export class JobsDetailsComponent implements OnInit {
             else {
               this.visible = true;
             }
+
+            this.employeeService.addJobAdViewToEmploye(this.loggedInEmployee.id).subscribe();
           }
         );
         

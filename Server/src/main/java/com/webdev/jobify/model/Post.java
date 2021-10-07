@@ -34,10 +34,10 @@ public class Post implements Serializable {
     @ManyToOne
     private Employee creator;
 
-    @OneToMany
+    @ManyToMany
     private List<Comment> comments = new LinkedList<>();
 
-    @OneToMany
+    @ManyToMany
     private List<Employee> likes = new LinkedList<>();
 
     public Post(Long id, String description, String file, Employee creator, List<Employee> likes) {

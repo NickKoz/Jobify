@@ -2,6 +2,26 @@
 
 <div>
 
+  <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+    <div class="search_bar">
+      <input class="form-control" type="search" formControlName="search" placeholder="Search employee...">
+      <button mat-flat-button type="submit" style="float: right;">
+        Search
+      </button>
+    </div>
+  </form>
+  
+  <ul *ngFor="let emp of searched" class="connection__List">
+    <li>
+      <a routerLink="/profile/{{emp.id}}">
+        <img class="employee__image" [src]="emp?.photo"><br>
+        <span class="employeeList__name">
+          {{ emp.name }} {{ emp.surname }}
+        </span>
+      </a>
+    </li>
+  </ul>
+
   <h3 class="title">
     Connections
   </h3>

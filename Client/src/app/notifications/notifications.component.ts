@@ -30,8 +30,6 @@ export class NotificationsComponent implements OnInit {
 
         this.pendingConnections = resp._embedded.employeeList;
 
-        console.log(this.pendingConnections);
-
       }
     );
 

@@ -1,5 +1,8 @@
 package com.webdev.jobify.controllers;
 
+import com.webdev.jobify._aux.Comment;
+import com.webdev.jobify._aux.MatrixFactElement;
+import com.webdev.jobify._aux.MatrixFactorization;
 import com.webdev.jobify.assemblers.*;
 import com.webdev.jobify.exception.UserNotFoundException;
 import com.webdev.jobify.model.*;
@@ -8,6 +11,7 @@ import com.webdev.jobify.services.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,10 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -159,6 +160,268 @@ public class EmployeeController {
         return CollectionModel.of(certificates, linkTo(methodOn(CertificateController.class).getAllCertificates()).withSelfRel());
     }
 
+    @PostMapping("/addjobadview")
+    public ResponseEntity<?> addJobAdViewToEmploye(@RequestParam("id") Long id) {
+
+        Employee employee = employeeService.findEmployeeById(id);
+        employee.setJobAdViews(employee.getJobAdViews() + 1);
+        employeeService.updateEmployee(employee);
+
+        return ResponseEntity.status(HttpStatus.OK).body("View added!");
+    }
+
+
+    @GetMapping("/{id}/jobads")
+    public CollectionModel<EntityModel<JobAd>> getEmployeeJobAds(@PathVariable("id") Long id) {
+
+        Employee employee = employeeService.findEmployeeById(id);
+        List<Employee> allEmployees = employeeService.findAllEmployees();
+
+        List<JobAd> jobAds = jobAdService.findAllJobAds();
+        List<String> employeeSkills = employee.getSkills();
+
+        List<JobAd> result = new LinkedList<>();
+
+        // Adding job ads that have employee's skill as position.
+        if(employeeSkills.size() != 0){
+            for(String skill: employeeSkills) {
+                for(JobAd ad: jobAds) {
+                    String position = ad.getPosition();
+                    if(position.toLowerCase().contains(skill.toLowerCase())){
+                        result.add(ad);
+                    }
+                }
+            }
+        }
+
+
+        int[][] rating = new int[allEmployees.size()][jobAds.size()];
+        int i=0, j=0;
+
+        for(Employee emp: allEmployees) {
+            j = 0;
+            for(JobAd ad: jobAds) {
+                rating[i][j] = emp.getJobAdViews();
+                j++;
+            }
+            i++;
+        }
+
+        int K = 3;
+
+        MatrixFactElement[][] P = new MatrixFactElement[allEmployees.size()][K];
+        MatrixFactElement[][] Q = new MatrixFactElement[K][jobAds.size()];
+
+
+        for(int a = 0 ; a < allEmployees.size() ; a++) {
+            for(int b = 0 ; b < K ; b++){
+                P[a][b] = new MatrixFactElement();
+            }
+        }
+
+        for(int b = 0 ; b < K ; b++) {
+            for(int a = 0 ; a < jobAds.size() ; a++){
+                Q[b][a] = new MatrixFactElement();
+            }
+        }
+
+        int a =0, b = 0;
+        for(Employee emp : allEmployees) {
+            b = 0;
+            for(int k = 0 ; k < K ; k++){
+                P[a][b].value = emp.getJobAdViews();
+                P[a][b].object1 = emp;
+                b++;
+            }
+            a++;
+        }
+
+        a =0;
+        b = 0;
+        for(int k = 0 ; k < K ; k++) {
+            b = 0;
+            for(JobAd ad : jobAds){
+                Q[a][b].value = ad.getViews();
+                Q[a][b].object1 = ad;
+                b++;
+            }
+            a++;
+        }
+
+        MatrixFactElement[][] Rd = MatrixFactorization.matrixFactorization(rating, P, Q, K);
+
+        int row = 0;
+        for(int z=0 ; z < Rd.length ; z++) {
+            if(Objects.equals(((Employee) Rd[z][0].object1).getId(), employee.getId())) {
+                row = z;
+            }
+        }
+
+        MatrixFactElement jobAdElement = MatrixFactorization.getMax1(Rd[row]);
+
+        result.add(((JobAd)jobAdElement.object1));
+
+        List<EntityModel<JobAd>> finalJobAds = result.stream().map(jobAdAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(finalJobAds, linkTo(methodOn(JobAdController.class).getAllJobAds()).withSelfRel());
+    }
+
+
+
+
+
+    @GetMapping("/{id}/postsfeed")
+    public CollectionModel<EntityModel<Post>> getEmployeeFeedPosts(@PathVariable Long id) {
+
+        List<EntityModel<Employee>> allConnections = new LinkedList<>(getEmployeeConnections(id).getContent());
+
+        List<Employee> connections = new LinkedList<>();
+
+        for(EntityModel<Employee> eemp: allConnections) {
+            connections.add(eemp.getContent());
+        }
+
+        List<Post> resultPosts = new LinkedList<>();
+
+        // First, adding the posts created by employee's connections.
+        for(Employee connected: connections) {
+            resultPosts.addAll(postService.findPostsByCreatorId(connected.getId()));
+        }
+
+
+        Employee employee = employeeService.findEmployeeById(id);
+        List<Employee> allEmployees = employeeService.findAllEmployees();
+
+        List<Post> allPosts = postService.findAllPosts();
+
+
+        int[][] rating = new int[allEmployees.size()][allPosts.size()];
+        int i=0, j=0;
+
+        for(Employee emp: allEmployees) {
+            j = 0;
+
+            List<EntityModel<Post>> likedPosts = new LinkedList<>(getEmployeeLikes(emp.getId()).getContent());
+            List<Comment> commentedPosts = new LinkedList<>(getEmployeeComments(emp.getId()));
+
+            for(Post p: allPosts) {
+                rating[i][j] = 2 * likedPosts.size() + commentedPosts.size() + 1;
+                j++;
+            }
+            i++;
+        }
+
+        int K = 3;
+
+        MatrixFactElement[][] P = new MatrixFactElement[allEmployees.size()][K];
+        MatrixFactElement[][] Q = new MatrixFactElement[K][allPosts.size()];
+
+        for(int a = 0 ; a < allEmployees.size() ; a++) {
+            for(int b = 0 ; b < K ; b++){
+                P[a][b] = new MatrixFactElement();
+            }
+        }
+
+        for(int b = 0 ; b < K ; b++) {
+            for(int a = 0 ; a < allPosts.size() ; a++){
+                Q[b][a] = new MatrixFactElement();
+            }
+        }
+
+
+        int a =0, b = 0;
+        for(Employee emp : allEmployees) {
+            b = 0;
+            List<EntityModel<Post>> likedPosts = new LinkedList<>(getEmployeeLikes(emp.getId()).getContent());
+            List<Comment> commentedPosts = new LinkedList<>(getEmployeeComments(emp.getId()));
+
+            for(int k = 0 ; k < K ; k++){
+                P[a][b].value =  2 * likedPosts.size() + commentedPosts.size() + 1;
+                P[a][b].object1 = emp;
+                b++;
+            }
+            a++;
+        }
+
+        a =0;
+        b = 0;
+        for(int k = 0 ; k < K ; k++) {
+            b = 0;
+            for(Post p : allPosts){
+                Q[a][b].value = 2 * p.getLikes().size() + p.getComments().size()  +1;
+                Q[a][b].object1 = p;
+                b++;
+            }
+            a++;
+        }
+
+
+        MatrixFactElement[][] Rd = MatrixFactorization.matrixFactorization(rating, P, Q, K);
+
+
+        int row = 0;
+        for(int z=0 ; z < Rd.length ; z++) {
+            if(Objects.equals(((Employee) Rd[z][0].object1).getId(), employee.getId())) {
+                row = z;
+            }
+        }
+
+
+        MatrixFactElement postElement = MatrixFactorization.getMax2(Rd[row]);
+
+        resultPosts.add(((Post)postElement.object1));
+
+
+        List<EntityModel<Post>> finalPosts = postService.findAllPosts().stream().map(postAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(finalPosts, linkTo(methodOn(PostController.class).getAllPosts()).withSelfRel());
+    }
+
+
+
+
+
+    @GetMapping("/{id}/likes")
+    public CollectionModel<EntityModel<Post>> getEmployeeLikes(@PathVariable Long id) {
+
+        List<Post> allPosts = postService.findAllPosts();
+
+        List<Post> likedPosts= new LinkedList<>();
+
+        for(Post p : allPosts) {
+            for(Employee e : p.getLikes()){
+                if(Objects.equals(e.getId(), id)) {
+                    likedPosts.add(p);
+                }
+            }
+        }
+
+        List<EntityModel<Post>> finalPosts = likedPosts.stream().map(postAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(finalPosts, linkTo(methodOn(PostController.class).getAllPosts()).withSelfRel());
+    }
+
+    @GetMapping("/{id}/comments")
+    public List<Comment> getEmployeeComments(@PathVariable Long id) {
+
+        List<Post> allPosts = postService.findAllPosts();
+
+        List<Comment> comments = new LinkedList<>();
+
+        for(Post p : allPosts) {
+            for(Comment c : p.getComments()){
+                if(Objects.equals(c.getCreator().getId(), id)) {
+                    comments.add(c);
+                }
+            }
+        }
+        return comments;
+    }
+
+
     @GetMapping("/{id}/skills")
     public List<String> getEmployeeSkills(@PathVariable("id") Long id) {
         Employee employee = employeeService.findEmployeeById(id);
@@ -179,7 +442,6 @@ public class EmployeeController {
             employeeService.updateEmployee(employee);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Skill could not be added!");
         }
 
@@ -205,6 +467,25 @@ public class EmployeeController {
     }
 
 
+    @GetMapping("/search/{input}")
+    public CollectionModel<EntityModel<Employee>> getEmployeesBySearch(@PathVariable String input) {
+
+        List<Employee> employees = employeeService.findAllEmployees();
+
+        List<Employee> result = new LinkedList<>();
+
+        for(Employee e: employees) {
+            if(e.getName().toLowerCase().contains(input.toLowerCase()) || e.getSurname().toLowerCase().contains(input.toLowerCase())){
+                result.add(e);
+            }
+        }
+
+        List<EntityModel<Employee>> finalEmployees = result.stream().map(employeeAssembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(finalEmployees, linkTo(methodOn(EmployeeController.class).getAllEmployees()).withSelfRel());
+
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginEmployee(@RequestParam("email") String email, @RequestParam("password") String password) {

@@ -1,4 +1,9 @@
-<div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+
+
+<div *ngIf="!employee.chats">
+    <app-header></app-header>
+</div>
+<div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3" *ngIf="employee.chats">
     <div class="users-container">
         <ul class="users" *ngFor="let emp of employee.chats">
             <a routerLink="/messaging/{{emp.id}}">
@@ -9,7 +14,6 @@
                     </div>
                     <p class="name-time">
                         <span class="name">{{emp.name}} {{emp.surname}}</span>
-                        <!-- <span class="time">15/02/2019</span> -->
                     </p>
                 </li>
             </a>

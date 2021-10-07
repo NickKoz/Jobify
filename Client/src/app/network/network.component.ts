@@ -3,6 +3,7 @@ import { Employee } from '../_models/employee/employee';
 import { EmployeeService } from '../_services/employee.service';
 import * as globals from '../globals';
 import { Job } from '../_models/job/job';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-network',
@@ -13,8 +14,41 @@ export class NetworkComponent implements OnInit {
 
   employee: Employee;
   noJobs: boolean = false;
+  searchForm: FormGroup;
+  searched: Employee[];
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService, private formBuilder: FormBuilder) {
+
+    this.searchForm = this.formBuilder.group({
+      search: ['', [Validators.required]]
+    });
+
+  }
+
+  public submitSearch() {
+    this.employeeService.getEmployeesBySearch(this.searchForm.get('search')!.value).subscribe(
+      (resp: any) => {
+        if(resp._embedded == null) {
+          return;
+        }
+        this.searched = resp._embedded.employeeList;
+
+        for(let emp of this.searched){
+          this.employeeService.getEmployeePicture(emp.id).subscribe(
+            (res: any) => {
+              if(res === null) {
+                emp.photo = globals.blankPicture;
+                return;
+              }
+              let type = res.type;
+              emp.photo = 'data:image/' + String(type) + ';base64,' + res.bytes;
+            }
+          );
+        }
+      }
+    );
+  }
+
 
   ngOnInit(): void {
       let tempEmp = localStorage.getItem('employee') as string;
@@ -60,8 +94,6 @@ export class NetworkComponent implements OnInit {
 
 
           }
-          
-          console.log(this.employee.connections);
 
         }
 

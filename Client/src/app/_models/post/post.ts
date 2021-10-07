@@ -6,6 +6,7 @@ export class Post {
     id: number;
     description: string;
     date: string;
+    file: any;
     creator: Employee;
     photo: any;
     comments: Comment[];

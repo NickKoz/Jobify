@@ -35,9 +35,9 @@
 
 .jobAd__List {
     padding: 15px 15px 20px;
-    height: 300px;
-    width: 250px;
-    overflow-x: auto;
+    height: 350px;
+    width: 300px;
+    overflow-y: auto;
 }
 
 .jobAd__List > li {

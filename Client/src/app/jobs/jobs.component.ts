@@ -41,26 +41,24 @@ export class JobsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.jobAdService.getAllJobAds().subscribe(
-      (resp: any) => {
-        if(resp._embedded == null) {
-          return;
-        }
-        
-        this.jobAdList = resp._embedded.jobAdList;
-
-      });
-
     let emp = localStorage.getItem('employee') as string;
     this.employee = JSON.parse(emp);
 
     this.employeeService.getEmployee(this.employee.id).subscribe(
       (emp: any) =>{
         this.employee = new Employee(emp.id, emp.name, emp.surname, emp.email,
-          emp.password, emp.jobTitle, emp.phone, emp.photo);
+          emp.password, emp.phone, emp.photo);
+          
+        this.employeeService.getEmployeeJobAds(this.employee.id).subscribe(
+          (resp: any) => {
+            if(resp._embedded == null) {
+              return;
+            }
+            
+            this.jobAdList = resp._embedded.jobAdList;
+          });
       }
     );
-
 
   }
 

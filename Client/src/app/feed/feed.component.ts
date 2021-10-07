@@ -8,6 +8,7 @@ import { Post } from '../_models/post/post';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Comment } from '../_models/comment/comment';
+import * as FileSaver from 'file-saver'
 
 @Component({
   selector: 'app-feed',
@@ -37,17 +38,17 @@ export class FeedComponent implements OnInit {
   }
 
   public submitPost() {
-    console.log(this.postForm.get('text')!.value);
-    
+
     let date = this.datePipe.transform(new Date(), 'yyyy-MM-dd') as string;
 
     let post = new Post(0, this.postForm.get('text')!.value, date, this.employee);
 
     this.postService.addPost(post, this.employee.id, this.postFile).subscribe();
+
+    window.location.reload();
   }
 
   public submitComment(post_id: number) {
-    console.log(this.commentForm.get('text')!.value, post_id);
 
     let comment = new Comment(0, this.commentForm.get('text')!.value, this.employee);
 
@@ -70,6 +71,23 @@ export class FeedComponent implements OnInit {
   }
 
   
+  public downloadFile(post_id: number){
+
+    this.postService.getPostFile(post_id).subscribe(
+      (res: any) => {
+        
+        this.postService.getPostFileName(post_id).subscribe(
+          (response: any) => {
+
+            let data = new Blob([res]);
+
+            FileSaver.saveAs(data, response.filename);
+          }
+        );
+        
+      }
+    );
+  }
 
 
   ngOnInit(): void {
@@ -87,7 +105,7 @@ export class FeedComponent implements OnInit {
       }
     );
 
-    this.postService.getAllPosts().subscribe(
+    this.employeeService.getEmployeeFeedPosts(this.employee.id).subscribe(
       (resp: any) => {
         if(resp._embedded == null) {
           return;
@@ -95,7 +113,6 @@ export class FeedComponent implements OnInit {
 
         this.postList = resp._embedded.postList;
 
-        console.log(this.postList);
 
         for(let post of this.postList) {
           this.employeeService.getEmployeePicture(post.creator.id).subscribe(

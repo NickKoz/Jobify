@@ -1,6 +1,8 @@
 package com.webdev.jobify.services;
 
+import com.webdev.jobify._aux.Comment;
 import com.webdev.jobify.model.Employee;
+import com.webdev.jobify.model.Post;
 import com.webdev.jobify.repos.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -55,14 +57,6 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id){
         employeeRepo.deleteEmployeeById(id);
-    }
-
-    public List<String> findSkillsOfEmployee(Long id) {
-        return employeeRepo.findSkillsOfEmployee(id);
-    }
-
-    public List<Employee> findApplicantsUsingJobAdId(Long id) {
-        return employeeRepo.findApplicantsUsingJobAdId(id);
     }
 
 }

@@ -63,15 +63,6 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   public submitJob() {
-    console.log(
-      this.jobForm.get('position')!.value,
-      this.jobForm.get('company')!.value,
-      this.jobForm.get('location')!.value,
-      this.jobForm.get('type')!.value,
-      this.jobForm.get('startDate')!.value,
-      this.jobForm.get('endDate')!.value,
-      this.jobForm.get('hidden')!.value
-      );
 
       let job = new Job(0, this.jobForm.get('position')!.value, this.jobForm.get('company')!.value,
       this.jobForm.get('location')!.value, this.jobForm.get('type')!.value - 1, this.jobForm.get('startDate')!.value,
@@ -79,23 +70,12 @@ export class EmployeeProfileComponent implements OnInit {
 
       this.jobService.addJobToEmployee(job, this.employee.id).subscribe();
 
-      console.log(JSON.stringify(job));
-
       window.location.reload();
 
   }
 
 
   public submitCertificate() {
-    console.log(
-      this.certificateForm.get('school')!.value,
-      this.certificateForm.get('degree')!.value,
-      this.certificateForm.get('field')!.value,
-      this.certificateForm.get('grade')!.value,
-      this.certificateForm.get('startDate')!.value,
-      this.certificateForm.get('endDate')!.value,
-      this.certificateForm.get('hidden')!.value
-      );
     
     let certificate = new Certificate(0, this.certificateForm.get('school')!.value, this.certificateForm.get('degree')!.value,
     this.certificateForm.get('field')!.value, this.certificateForm.get('startDate')!.value, this.certificateForm.get('endDate')!.value,
@@ -131,27 +111,11 @@ export class EmployeeProfileComponent implements OnInit {
           this.visible = false;
         }
 
-        // let startD = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') as string;
-        // console.log("NOW " + startD);
-
-        // let job = new Job(null as any, 'Front End Developer', 'TestCompany', 'Athens', TypeOfEmployment.PART_TIME, startD, null as any, 
-        // false);
-
-        // this.jobService.addJobToEmployee(job, this.employeeID).subscribe(
-        //   (resp) => {
-        //     console.log(resp);
-        //   },
-        //   (err) => {
-        //     console.log(err);
-        //   }
-        // );
-
-
         // Getting employee's data.
         this.employeeService.getEmployee(this.employeeID).subscribe(
           (emp: any) =>{
             this.employee = new Employee(emp.id, emp.name, emp.surname, emp.email,
-              emp.password, emp.jobTitle, emp.phone, emp.photo);
+              emp.password, emp.phone, emp.photo);
           }
         );
         
@@ -162,7 +126,7 @@ export class EmployeeProfileComponent implements OnInit {
               return;
             }
 
-            let jobList = resp._embedded.jobList;
+            let jobList: Job[] = resp._embedded.jobList;
             
             for(let job of jobList) {
               this.employee.jobs.push(new Job(job.id, job.position, job.company,
@@ -170,7 +134,6 @@ export class EmployeeProfileComponent implements OnInit {
                 
               this.employee.jobs[this.employee.jobs.length - 1].beautify();
             }
-            console.log(this.employee.jobs);
 
           }
         );
@@ -190,7 +153,6 @@ export class EmployeeProfileComponent implements OnInit {
               
               this.employee.certificates[this.employee.certificates.length - 1].beautify();
             }
-            console.log(this.employee.certificates);
 
           }
         );
@@ -207,7 +169,6 @@ export class EmployeeProfileComponent implements OnInit {
             for(let skill of skillsList) {
               this.employee.skills.push(skill);
             }
-            console.log(this.employee.skills);
           }
 
         );

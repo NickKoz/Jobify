@@ -36,8 +36,10 @@ public class JobAd implements Serializable { // Job Advertisement
     @OneToMany
     private List<Employee> applicants = new LinkedList<>();
 
+    private int views = 0;
+
     public JobAd(Long id, String position, String company, String location, int type,
-                 Date startDate, Employee creator, List<Employee> applicants) {
+                 Date startDate, Employee creator, List<Employee> applicants, int views) {
         this.id = id;
         this.position = position;
         this.company = company;
@@ -46,6 +48,7 @@ public class JobAd implements Serializable { // Job Advertisement
         this.startDate = startDate;
         this.creator = creator;
         this.applicants = applicants;
+        this.views = views;
     }
 
     public JobAd() {}
@@ -111,7 +114,16 @@ public class JobAd implements Serializable { // Job Advertisement
         return applicants;
     }
 
-    public void setApplicants(List<Employee> appliers) {
-        this.applicants = appliers;
+    public void setApplicants(List<Employee> applicants) {
+        this.applicants = applicants;
     }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+
 }

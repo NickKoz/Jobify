@@ -41,6 +41,8 @@ public class JobAdController {
     @GetMapping("/{id}")
     public EntityModel<JobAd> getJobAdById(@PathVariable("id") Long id) {
         JobAd jobAd = jobAdService.findJobAdById(id);
+        jobAd.setViews(jobAd.getViews() + 1);
+        jobAd = jobAdService.saveJobAd(jobAd);
         return assembler.toModel(jobAd);
     }
 

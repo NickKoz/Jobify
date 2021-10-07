@@ -13,12 +13,13 @@
           </div>
           <div class="media-body va-m">
             <h2 class="media-heading">{{employee?.name}} {{employee?.surname}}</h2>
-            <h4 class="lead">Developer</h4>
             <br>
             <button mat-flat-button [disabled]="pendingRequest || requestSent" 
                 [ngClass]="{ not_following : !requestSent || pendingRequest , following : requestSent}"
                 (click)="handleFollow()" *ngIf="!visible">
             {{ followMessage }}</button>
+            <button mat-flat-button routerLink="/messaging/{{employee.id}}" *ngIf="!visible" style="background-color: #0a66c2;margin: 10px;">
+              Message</button>
           </div>
         </div>
     </div>
